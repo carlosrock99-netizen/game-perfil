@@ -5,7 +5,7 @@
   "resposta": "1492",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -115,7 +115,7 @@
   "resposta": "1500",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -225,7 +225,7 @@
   "resposta": "1789",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -335,7 +335,7 @@
   "resposta": "1808",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -445,7 +445,7 @@
   "resposta": "1822",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -555,7 +555,7 @@
   "resposta": "1880",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/1880",
-  "nivel": null,
+  "nivel": "complexo",
   "dicas": [
    {
     "n": 1,
@@ -665,7 +665,7 @@
   "resposta": "1888",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -775,7 +775,7 @@
   "resposta": "1889",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -885,7 +885,7 @@
   "resposta": "1890",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/1890",
-  "nivel": null,
+  "nivel": "complexo",
   "dicas": [
    {
     "n": 1,
@@ -995,7 +995,7 @@
   "resposta": "1900",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/1900",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -1105,7 +1105,7 @@
   "resposta": "1906",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/1906",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -1215,7 +1215,7 @@
   "resposta": "1914",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -1325,7 +1325,7 @@
   "resposta": "1917",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -1435,7 +1435,7 @@
   "resposta": "1927",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/1927",
-  "nivel": null,
+  "nivel": "complexo",
   "dicas": [
    {
     "n": 1,
@@ -1545,7 +1545,7 @@
   "resposta": "1930",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -1655,7 +1655,7 @@
   "resposta": "1933",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/1933",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -1765,7 +1765,7 @@
   "resposta": "1939",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -1875,7 +1875,7 @@
   "resposta": "1945",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -1985,7 +1985,7 @@
   "resposta": "1950",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -2095,7 +2095,7 @@
   "resposta": "1958",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -2205,7 +2205,7 @@
   "resposta": "1960",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -2315,7 +2315,7 @@
   "resposta": "1964",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -2425,7 +2425,7 @@
   "resposta": "1969",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -2535,7 +2535,7 @@
   "resposta": "1970",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -2645,7 +2645,7 @@
   "resposta": "1985",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -2755,7 +2755,7 @@
   "resposta": "1987",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/1987",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -2865,7 +2865,7 @@
   "resposta": "1988",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -2975,7 +2975,7 @@
   "resposta": "1989",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -3085,7 +3085,7 @@
   "resposta": "1992",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/1992",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -3195,7 +3195,7 @@
   "resposta": "1994",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -3305,7 +3305,7 @@
   "resposta": "1998",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -3415,7 +3415,7 @@
   "resposta": "2001",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -3525,7 +3525,7 @@
   "resposta": "2002",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -3635,7 +3635,7 @@
   "resposta": "2008",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -3745,7 +3745,7 @@
   "resposta": "2014",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -3855,7 +3855,7 @@
   "resposta": "2015",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/2015",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -3965,7 +3965,7 @@
   "resposta": "2016",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -4075,7 +4075,7 @@
   "resposta": "2020",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -4185,7 +4185,7 @@
   "resposta": "2022",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -4298,7 +4298,7 @@
    "Nineteen Eighty-Four"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/1984_(livro)",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -4410,7 +4410,7 @@
    "Game of Thrones"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Game_of_Thrones",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -4520,7 +4520,7 @@
   "resposta": "Avatar",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/Avatar_(filme)",
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -4630,7 +4630,7 @@
   "resposta": "Avião",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -4743,7 +4743,7 @@
    "Magrela"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -4855,7 +4855,7 @@
    "Bola"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -4965,7 +4965,7 @@
   "resposta": "Cadeira",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -5077,7 +5077,7 @@
    "Automóvel"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -5187,7 +5187,7 @@
   "resposta": "Carrossel",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/Carrossel_(telenovela)",
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -5299,7 +5299,7 @@
    "Smartphone"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -5409,7 +5409,7 @@
   "resposta": "Chapéu",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -5519,7 +5519,7 @@
   "resposta": "Chave",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -5629,7 +5629,7 @@
   "resposta": "Computador",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -5739,7 +5739,7 @@
   "resposta": "Cuscuz",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -5853,7 +5853,7 @@
    "Don Quixote"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Dom_Quixote",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -5965,7 +5965,7 @@
    "Escova"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -6075,7 +6075,7 @@
   "resposta": "Escrava Isaura",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/Escrava_Isaura_(telenovela_de_1976)",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -6185,7 +6185,7 @@
   "resposta": "Espelho",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -6295,7 +6295,7 @@
   "resposta": "Fogão",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -6407,7 +6407,7 @@
    "Refrigerador"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -6517,7 +6517,7 @@
   "resposta": "Guarda-chuva",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -6627,7 +6627,7 @@
   "resposta": "Lápis",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -6737,7 +6737,7 @@
   "resposta": "Livro",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -6847,7 +6847,7 @@
   "resposta": "Minecraft",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/Minecraft",
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -6959,7 +6959,7 @@
    "The Alchemist"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/O_Alquimista",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -7069,7 +7069,7 @@
   "resposta": "O Clone",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/O_Clone",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -7181,7 +7181,7 @@
    "The Lord of the Rings"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/O_Senhor_dos_An%C3%A9is",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -7291,7 +7291,7 @@
   "resposta": "Óculos",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -7405,7 +7405,7 @@
    "Pandorga"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -7515,7 +7515,7 @@
   "resposta": "Rapadura",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -7627,7 +7627,7 @@
    "Rede"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -7737,7 +7737,7 @@
   "resposta": "Relógio",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -7850,7 +7850,7 @@
    "Gaita"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -7960,7 +7960,7 @@
   "resposta": "Sapato",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -8072,7 +8072,7 @@
    "Beiju"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -8184,7 +8184,7 @@
    "TV"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -8297,7 +8297,7 @@
    "O Padrinho"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/The_Godfather",
-  "nivel": null,
+  "nivel": "complexo",
   "dicas": [
    {
     "n": 1,
@@ -8407,7 +8407,7 @@
   "resposta": "Titanic",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/Titanic_(filme_de_1997)",
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -8517,7 +8517,7 @@
   "resposta": "Travesseiro",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -8627,7 +8627,7 @@
   "resposta": "Vassoura",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -8737,7 +8737,7 @@
   "resposta": "Vela",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -8847,7 +8847,7 @@
   "resposta": "Violão",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -8957,7 +8957,7 @@
   "resposta": "Amazônia",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -9069,7 +9069,7 @@
    "Antártica"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -9179,7 +9179,7 @@
   "resposta": "Austrália",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -9293,7 +9293,7 @@
    "Baghdad"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Bagd%C3%A1",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -9405,7 +9405,7 @@
    "Belgrade"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Belgrado",
-  "nivel": null,
+  "nivel": "complexo",
   "dicas": [
    {
     "n": 1,
@@ -9515,7 +9515,7 @@
   "resposta": "Brasília",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -9625,7 +9625,7 @@
   "resposta": "Campina Grande",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -9737,7 +9737,7 @@
    "Cataratas"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -9847,7 +9847,7 @@
   "resposta": "Coliseu",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -9959,7 +9959,7 @@
    "República de Cuba"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Cuba",
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -10071,7 +10071,7 @@
    "Saara"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -10181,7 +10181,7 @@
   "resposta": "Egito",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -10293,7 +10293,7 @@
    "Noronha"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -10403,7 +10403,7 @@
   "resposta": "Grécia",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -10513,7 +10513,7 @@
   "resposta": "Havaí",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -10626,7 +10626,7 @@
    "Yemen"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/I%C3%A9men",
-  "nivel": null,
+  "nivel": "complexo",
   "dicas": [
    {
     "n": 1,
@@ -10742,7 +10742,7 @@
    "Ilha Grande de Joannes"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Ilha_de_Maraj%C3%B3",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -10857,7 +10857,7 @@
    "Ireland"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Irlanda_(ilha)",
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -10969,7 +10969,7 @@
    "Iceland"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Isl%C3%A2ndia",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -11079,7 +11079,7 @@
   "resposta": "Japão",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -11191,7 +11191,7 @@
    "Ilha de Java"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Java",
-  "nivel": null,
+  "nivel": "complexo",
   "dicas": [
    {
     "n": 1,
@@ -11301,7 +11301,7 @@
   "resposta": "João Pessoa",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -11411,7 +11411,7 @@
   "resposta": "Lençóis Maranhenses",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -11521,7 +11521,7 @@
   "resposta": "Londres",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -11631,7 +11631,7 @@
   "resposta": "Machu Picchu",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -11743,7 +11743,7 @@
    "Everest"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -11861,7 +11861,7 @@
    "Mount Fuji"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Monte_Fuji",
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -11973,7 +11973,7 @@
    "Grande Muralha"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -12085,7 +12085,7 @@
    "New York"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -12195,7 +12195,7 @@
   "resposta": "Ouro Preto",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -12305,7 +12305,7 @@
   "resposta": "Pantanal",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -12415,7 +12415,7 @@
   "resposta": "Paris",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -12525,7 +12525,7 @@
   "resposta": "Portugal",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -12635,7 +12635,7 @@
   "resposta": "Recife",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -12749,7 +12749,7 @@
    "Reiquiavique"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Reiquiavique",
-  "nivel": null,
+  "nivel": "complexo",
   "dicas": [
    {
     "n": 1,
@@ -12859,7 +12859,7 @@
   "resposta": "Rio de Janeiro",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -12972,7 +12972,7 @@
    "Velho Chico"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -13082,7 +13082,7 @@
   "resposta": "Salvador",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -13197,7 +13197,7 @@
    "Saint Petersburg"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/S%C3%A3o_Petersburgo",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -13314,7 +13314,7 @@
    "Sinai Peninsula"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Sinai",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -13424,7 +13424,7 @@
   "resposta": "Torre Eiffel",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -13534,7 +13534,7 @@
   "resposta": "Veneza",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -13646,7 +13646,7 @@
    "Einstein"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -13758,7 +13758,7 @@
    "Suassuna"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -13871,7 +13871,7 @@
    "Sir Arthur Connan Doyle"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Arthur_Conan_Doyle",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -13984,7 +13984,7 @@
    "Ayrton Senna da Silva"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -14096,7 +14096,7 @@
    "Marighella"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Carlos_Marighella",
-  "nivel": null,
+  "nivel": "complexo",
   "dicas": [
    {
     "n": 1,
@@ -14206,7 +14206,7 @@
   "resposta": "Carmen Miranda",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -14319,7 +14319,7 @@
    "Carlitos"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -14432,7 +14432,7 @@
    "Chico Buarque de Holanda"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Chico_Buarque",
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -14546,7 +14546,7 @@
    "Teresa Quadros"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Clarice_Lispector",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -14658,7 +14658,7 @@
    "Cleopatra VII"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -14768,7 +14768,7 @@
   "resposta": "Diego Maradona",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/Diego_Maradona",
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -14880,7 +14880,7 @@
    "Pedro II"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -14992,7 +14992,7 @@
    "Carlos Caetano Bledorn Verri"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Dunga",
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -15104,7 +15104,7 @@
    "Elvis"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -15218,7 +15218,7 @@
    "FHC"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Fernando_Henrique_Cardoso",
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -15330,7 +15330,7 @@
    "Frida"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -15443,7 +15443,7 @@
    "Galileo Galilei"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Galileu_Galilei",
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -15555,7 +15555,7 @@
    "Mané Garrincha"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -15668,7 +15668,7 @@
    "Vargas"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -15780,7 +15780,7 @@
    "Gilberto Passos Gil Moreira"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Gilberto_Gil",
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -15892,7 +15892,7 @@
    "Newton"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -16002,7 +16002,7 @@
   "resposta": "John Locke",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/John_Locke",
-  "nivel": null,
+  "nivel": "complexo",
   "dicas": [
    {
     "n": 1,
@@ -16114,7 +16114,7 @@
    "Virgulino Ferreira da Silva"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -16227,7 +16227,7 @@
    "Leonardo"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -16337,7 +16337,7 @@
   "resposta": "Louis Armstrong",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/Louis_Armstrong",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -16449,7 +16449,7 @@
    "Gonzagão"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -16562,7 +16562,7 @@
    "Machado"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -16674,7 +16674,7 @@
    "Madame Curie"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -16786,7 +16786,7 @@
    "Marta Vieira da Silva"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -16896,7 +16896,7 @@
   "resposta": "Michael Jackson",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -17006,7 +17006,7 @@
   "resposta": "Michael Jordan",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/Michael_Jordan",
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -17116,7 +17116,7 @@
   "resposta": "Molière",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/Moli%C3%A8re",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -17226,7 +17226,7 @@
   "resposta": "Monteiro Lobato",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -17339,7 +17339,7 @@
    "Bonaparte"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -17449,7 +17449,7 @@
   "resposta": "Niels Bohr",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/Niels_Bohr",
-  "nivel": null,
+  "nivel": "complexo",
   "dicas": [
    {
     "n": 1,
@@ -17561,7 +17561,7 @@
    "Novak Djokovic"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Novak_Djokovic",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -17673,7 +17673,7 @@
    "Niemeyer"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -17785,7 +17785,7 @@
    "Edson Arantes do Nascimento"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -17897,7 +17897,7 @@
    "Isabel"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -18011,7 +18011,7 @@
    "Raquel de Queirós"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Rachel_de_Queiroz",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -18121,7 +18121,7 @@
   "resposta": "Rafael Nadal",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/Rafael_Nadal",
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -18233,7 +18233,7 @@
    "Santos-Dumont"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -18345,7 +18345,7 @@
    "Serena Jameka Williams"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Serena_Williams",
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -18457,7 +18457,7 @@
    "Joaquim José da Silva Xavier"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -18569,7 +18569,7 @@
    "Antônio Carlos Jobim"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -18679,7 +18679,7 @@
   "resposta": "Vincent van Gogh",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/Vincent_van_Gogh",
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -18792,7 +18792,7 @@
    "Vladimir Lenin"
   ],
   "fonte": "https://pt.wikipedia.org/wiki/Lenin",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -18902,7 +18902,7 @@
   "resposta": "Walt Disney",
   "alternativas": [],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -19014,7 +19014,7 @@
    "Shakespeare"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "facil",
   "dicas": [
    {
     "n": 1,
@@ -19124,7 +19124,7 @@
   "resposta": "Wolfgang Amadeus Mozart",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/Wolfgang_Amadeus_Mozart",
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,
@@ -19234,7 +19234,7 @@
   "resposta": "Xi Jinping",
   "alternativas": [],
   "fonte": "https://pt.wikipedia.org/wiki/Xi_Jinping",
-  "nivel": null,
+  "nivel": "dificil",
   "dicas": [
    {
     "n": 1,
@@ -19346,7 +19346,7 @@
    "Zumbi"
   ],
   "fonte": null,
-  "nivel": null,
+  "nivel": "medio",
   "dicas": [
    {
     "n": 1,

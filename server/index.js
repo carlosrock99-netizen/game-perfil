@@ -6,7 +6,7 @@ const crypto = require('crypto');
 const http = require('http');
 const express = require('express');
 const { Server } = require('socket.io');
-const { Sala, ErroJogo, TEMAS } = require('./regras');
+const { Sala, ErroJogo, TEMAS, NIVEIS } = require('./regras');
 
 const PORTA = Number(process.env.PORT) || 3000;
 const SALA_OCIOSA_MS = 6 * 60 * 60 * 1000; // apaga salas paradas há 6 h
@@ -189,8 +189,11 @@ setInterval(() => {
 app.get('/api/saude', (_req, res) => res.json({ ok: true, salas: salas.size, cartas: baralho.length }));
 app.get('/api/baralho', (_req, res) => {
   const porTema = Object.fromEntries(TEMAS.map((t) => [t, baralho.filter((c) => c.categoria === t).length]));
-  const niveis = [...new Set(baralho.map((c) => c.nivel).filter(Boolean))];
-  res.json({ total: baralho.length, porTema, niveis });
+  // contagem[tema][nivel]: o front calcula quantas cartas sobram para cada filtro.
+  const contagem = Object.fromEntries(TEMAS.map((t) => [t, Object.fromEntries(
+    [...NIVEIS, 'sem'].map((n) => [n, baralho.filter((c) => c.categoria === t && (c.nivel || 'sem') === n).length]),
+  )]));
+  res.json({ total: baralho.length, porTema, niveis: NIVEIS, contagem });
 });
 
 const dist = path.join(__dirname, '..', 'client', 'dist');

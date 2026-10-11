@@ -4,6 +4,7 @@ import { pedir } from '../conexao';
 
 export const NOMES_TEMA = { pessoa: 'uma pessoa', lugar: 'um lugar', coisa: 'uma coisa', ano: 'um ano' };
 export const ROTULO_TEMA = { pessoa: 'Pessoa', lugar: 'Lugar', coisa: 'Coisa', ano: 'Ano' };
+export const ROTULO_NIVEL = { facil: 'Fácil', medio: 'Médio', dificil: 'Difícil', complexo: 'Complexo' };
 
 export function Carta({ estado, podeAbrir, aoAbrir }) {
   const { carta, totalDicas, fase } = estado;
@@ -14,7 +15,7 @@ export function Carta({ estado, podeAbrir, aoAbrir }) {
     <section className={`carta tema-${carta.categoria}`} aria-label="Carta">
       <header className="carta-topo">
         <div>
-          <div className="rotulo">Eu sou</div>
+          <div className="rotulo">Eu sou {carta.nivel && <span className={`nivel nivel-${carta.nivel}`}>{ROTULO_NIVEL[carta.nivel]}</span>}</div>
           <div className="carta-tema">{NOMES_TEMA[carta.categoria]}</div>
         </div>
         <div className="carta-conta">

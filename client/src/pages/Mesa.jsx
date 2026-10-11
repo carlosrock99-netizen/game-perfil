@@ -116,7 +116,7 @@ export default function Mesa({ codigo, modo }) {
             <Placar estado={estado} meuId={meuId} souHost={souHost} />
             {souHost && (
               <section className="painel">
-                <p className="sutil">{estado.cartasNoBaralho} cartas · chegada na casa {estado.config.meta} · dicas especiais {estado.config.especiais ? 'ligadas' : 'desligadas'}</p>
+                <p className="sutil">{estado.cartasNoBaralho} cartas{estado.config.niveis?.length ? ` (${estado.config.niveis.map((n) => ({ facil: 'fácil', medio: 'médio', dificil: 'difícil', complexo: 'complexo' })[n]).join(', ')})` : ''} · chegada na casa {estado.config.meta} · dicas especiais {estado.config.especiais ? 'ligadas' : 'desligadas'}</p>
                 <button type="button" className="botao grande" disabled={estado.jogadores.length < 2} onClick={() => comando('iniciar')}>
                   {estado.jogadores.length < 2 ? 'Esperando pelo menos 2 jogadores' : 'Começar partida'}
                 </button>

@@ -52,6 +52,16 @@ for (const c of cartas) {
   c.dicas.sort((a, b) => a.n - b.n);
   if (c.dicas.length !== 20) throw new Error(`${c.resposta} tem ${c.dicas.length} dicas`);
 }
+// Níveis (facil, medio, dificil, complexo) ficam em data/niveis.json, por resposta,
+// para não se perderem quando o baralho for importado de novo.
+const arqNiveis = path.join(__dirname, '..', 'data', 'niveis.json');
+const niveis = fs.existsSync(arqNiveis) ? JSON.parse(fs.readFileSync(arqNiveis, 'utf8')) : {};
+const semNivel = [];
+for (const c of cartas) {
+  c.nivel = niveis[c.resposta] || null;
+  if (!c.nivel) semNivel.push(c.resposta);
+}
+if (semNivel.length) console.warn(`${semNivel.length} carta(s) sem nível em data/niveis.json:`, semNivel.join(', '));
 const destino = path.join(__dirname, '..', 'data', 'cartas.json');
 fs.writeFileSync(destino, JSON.stringify(cartas, null, 1));
 const porTema = cartas.reduce((a, c) => ((a[c.categoria] = (a[c.categoria] || 0) + 1), a), {});

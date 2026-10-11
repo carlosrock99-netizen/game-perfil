@@ -4,6 +4,12 @@ import { ROTULO_TEMA } from '../components/Jogo';
 
 const TEMAS = ['pessoa', 'lugar', 'coisa', 'ano'];
 const METAS = [30, 50, 80];
+const NIVEIS = [
+  { id: 'facil', nome: 'Fácil', dica: 'objetos do dia a dia, nomes e datas que todo mundo conhece' },
+  { id: 'medio', nome: 'Médio', dica: 'conhecimento geral, cultura brasileira e mundial' },
+  { id: 'dificil', nome: 'Difícil', dica: 'pede leitura, história e geografia além do básico' },
+  { id: 'complexo', nome: 'Complexo', dica: 'para quem gosta de quiz: nomes e anos pouco lembrados' },
+];
 
 export default function Inicio() {
   const [nome, setNome] = useState(guardar.ler('nome') || '');
@@ -12,6 +18,7 @@ export default function Inicio() {
   const [meta, setMeta] = useState(50);
   const [especiais, setEspeciais] = useState(true);
   const [modo, setModo] = useState('mediador');
+  const [niveis, setNiveis] = useState(['facil', 'medio', 'dificil', 'complexo']);
   const [codigo, setCodigo] = useState('');
   const [erro, setErro] = useState('');
   const [baralho, setBaralho] = useState(null);
@@ -20,15 +27,21 @@ export default function Inicio() {
   useEffect(() => { fetch('/api/baralho').then((r) => r.json()).then(setBaralho).catch(() => {}); }, []);
 
   const alternarTema = (t) => setTemas((a) => (a.includes(t) ? a.filter((x) => x !== t) : [...a, t]));
-  const cartasDisponiveis = baralho ? temas.reduce((s, t) => s + (baralho.porTema[t] || 0), 0) : null;
+  const alternarNivel = (n) => setNiveis((a) => (a.includes(n) ? a.filter((x) => x !== n) : [...a, n]));
+  const contar = (ts, ns) => (baralho?.contagem
+    ? ts.reduce((s, t) => s + ns.reduce((q, n) => q + (baralho.contagem[t]?.[n] || 0), 0) + (baralho.contagem[t]?.sem || 0), 0)
+    : null);
+  const cartasDisponiveis = contar(temas, niveis);
 
   async function criar(e) {
     e.preventDefault();
     if (vouJogar && !nome.trim()) return setErro('Digite seu nome para jogar também.');
     if (!temas.length) return setErro('Escolha pelo menos um tema.');
+    if (!niveis.length) return setErro('Escolha pelo menos um nível.');
+    if (cartasDisponiveis !== null && cartasDisponiveis < 5) return setErro('Poucas cartas com esses temas e níveis. Marque mais opções.');
     setOcupado(true); setErro('');
     guardar.gravar('nome', nome.trim());
-    const r = await pedir('criar', { nome: vouJogar ? nome.trim() : null, config: { temas, meta, especiais, modo } });
+    const r = await pedir('criar', { nome: vouJogar ? nome.trim() : null, config: { temas, niveis, meta, especiais, modo } });
     setOcupado(false);
     if (!r.ok) return setErro(r.erro);
     guardar.gravar(`host:${r.codigo}`, { hostChave: r.hostChave, chave: r.chave || null });
@@ -77,10 +90,21 @@ export default function Inicio() {
             <div className="opcoes">
               {TEMAS.map((t) => (
                 <button key={t} type="button" className={`opcao${temas.includes(t) ? ' marcada' : ''}`} aria-pressed={temas.includes(t)} onClick={() => alternarTema(t)}>
-                  {ROTULO_TEMA[t]}{baralho && <small>{baralho.porTema[t]}</small>}
+                  {ROTULO_TEMA[t]}{baralho && <small>{contar([t], niveis)}</small>}
                 </button>
               ))}
             </div>
+          </fieldset>
+          <fieldset className="campo">
+            <legend className="rotulo">Nível de dificuldade</legend>
+            <div className="opcoes">
+              {NIVEIS.map((n) => (
+                <button key={n.id} type="button" className={`opcao nivel-${n.id}${niveis.includes(n.id) ? ' marcada' : ''}`} aria-pressed={niveis.includes(n.id)} onClick={() => alternarNivel(n.id)}>
+                  {n.nome}{baralho && <small>{contar(temas, [n.id]) - contar(temas, [])}</small>}
+                </button>
+              ))}
+            </div>
+            <span className="sutil">{niveis.length === 1 ? NIVEIS.find((n) => n.id === niveis[0]).dica : 'Pode marcar mais de um. As cartas saem misturadas entre os níveis marcados.'}</span>
           </fieldset>
           <fieldset className="campo">
             <legend className="rotulo">Casa de chegada</legend>

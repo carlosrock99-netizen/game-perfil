@@ -12,7 +12,8 @@ real, o tabuleiro e as dicas especiais.
 
 ## Como se joga
 
-1. O anfitrião abre o site, escolhe os temas, a casa de chegada e cria a sala.
+1. O anfitrião abre o site, escolhe os temas, o nível de dificuldade, a casa de
+   chegada e cria a sala.
 2. A turma entra pelo QR code, pelo link de convite ou digitando o código de 5 letras.
 3. A ordem das vezes é sorteada. Na sua vez você **abre uma dica** da carta (1 a 20).
    A dica aparece para todos.
@@ -121,8 +122,13 @@ As cartas ficam em `data/cartas.json`:
 - `alternativas`: outras respostas aceitas. O verificador já perdoa acento,
   maiúscula, artigo, hífen, pequenos erros de digitação e só o sobrenome
   ("Shakespeare").
-- `nivel` (`facil`, `medio`, `dificil`): o servidor já filtra por nível, mas as
-  175 cartas importadas ainda não têm nível definido. Ver o roteiro abaixo.
+- `nivel`: `facil`, `medio`, `dificil` ou `complexo`. A classificação fica em
+  `data/niveis.json` (resposta → nível) e é reaplicada a cada importação. Carta
+  sem nível entra em qualquer filtro.
+
+Distribuição atual das 175 cartas: 54 fáceis, 77 médias, 33 difíceis e 11
+complexas. Na criação da sala dá para marcar um ou mais níveis; as cartas saem
+misturadas entre os marcados.
 
 **Para atualizar o baralho a partir do projeto original** (que gera cartas novas
 pelo Wikidata no painel `/admin` dele e exporta para `cartas.sql`):
@@ -154,7 +160,8 @@ test/  testes das regras e do verificador
 
 ## Roteiro
 
-- [ ] Nível de dificuldade por carta (fácil, médio, difícil) e filtro na criação da sala.
+- [x] Nível de dificuldade por carta (fácil, médio, difícil, complexo) e filtro na criação da sala.
+- [ ] Mais cartas no nível complexo (hoje são 11).
 - [ ] Mais temas além dos quatro do Perfil (esportes, música, cinema etc.).
 - [ ] Guardar as salas no Redis para sobreviver a reinício do servidor.
 - [ ] Cronômetro opcional por vez.

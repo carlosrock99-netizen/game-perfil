@@ -31,6 +31,7 @@ const ESPECIAIS = {
   outra: 'Abra outra dica',
 };
 const TEMAS = ['pessoa', 'lugar', 'coisa', 'ano'];
+const NIVEIS = ['facil', 'medio', 'dificil', 'complexo'];
 
 class ErroJogo extends Error {}
 const falha = (msg) => { throw new ErroJogo(msg); };
@@ -54,7 +55,7 @@ class Sala {
     this.config = {
       meta: Math.min(120, Math.max(10, Number(config.meta) || 50)),
       temas: (config.temas || TEMAS).filter((t) => TEMAS.includes(t)),
-      niveis: Array.isArray(config.niveis) ? config.niveis : [],
+      niveis: Array.isArray(config.niveis) ? config.niveis.filter((n) => NIVEIS.includes(n)) : [],
       especiais: config.especiais !== false,
       modo: config.modo === 'digitado' ? 'digitado' : 'mediador',
     };
@@ -373,6 +374,7 @@ class Sala {
       numCarta: this.numCarta,
       carta: c && {
         categoria: c.categoria,
+        nivel: c.nivel,
         resposta: mostrarResposta ? c.resposta : null,
         fonte: mostrarResposta ? c.fonte : null,
         dicas: this.abertas.map((n) => ({
@@ -390,4 +392,4 @@ class Sala {
   }
 }
 
-module.exports = { Sala, ErroJogo, TOTAL_DICAS, TEMAS, ESPECIAIS };
+module.exports = { Sala, ErroJogo, TOTAL_DICAS, TEMAS, NIVEIS, ESPECIAIS };

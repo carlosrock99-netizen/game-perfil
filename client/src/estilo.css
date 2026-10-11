@@ -170,3 +170,14 @@ input:not([type=checkbox]) { background: var(--mesa); color: var(--tinta); borde
 .todas ol { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
 .todas li.lida { opacity: 0.45; text-decoration: line-through; }
 .todas li b { display: inline-block; min-width: 22px; }
+
+/* níveis */
+.nivel { display: inline-block; margin-left: 6px; padding: 1px 8px; border-radius: 999px; font-size: 10px; letter-spacing: 0.08em; color: #fff; vertical-align: 1px; }
+.nivel-facil.nivel { background: #2b8a3e; }
+.nivel-medio.nivel { background: #1971c2; }
+.nivel-dificil.nivel { background: #c2410c; }
+.nivel-complexo.nivel { background: #7e22ce; }
+.opcao.nivel-facil.marcada { background: #69db7c; border-color: #69db7c; }
+.opcao.nivel-medio.marcada { background: #74c0fc; border-color: #74c0fc; }
+.opcao.nivel-dificil.marcada { background: #ffa94d; border-color: #ffa94d; }
+.opcao.nivel-complexo.marcada { background: #d0a3ff; border-color: #d0a3ff; }

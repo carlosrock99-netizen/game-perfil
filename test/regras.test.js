@@ -184,3 +184,16 @@ test('se o mediador sai, a carta é encerrada', () => {
   s.remover(s.mediador);
   assert.equal(s.fase, 'revelada');
 });
+
+test('filtro de nível: só saem cartas dos níveis escolhidos', () => {
+  const baralho = [
+    { ...carta(1, 'pessoa', 'Pelé'), nivel: 'facil' },
+    { ...carta(2, 'pessoa', 'Niels Bohr'), nivel: 'complexo' },
+  ];
+  const s = new Sala({ codigo: 'N', baralho, config: { niveis: ['complexo'], modo: 'digitado' } });
+  assert.equal(s.baralho().length, 1);
+  s.adicionarJogador({ id: 'a', nome: 'A' }); s.adicionarJogador({ id: 'b', nome: 'B' }); s.iniciar();
+  assert.equal(s.carta.resposta, 'Niels Bohr');
+  assert.equal(s.visao().carta.nivel, 'complexo');
+  assert.throws(() => new Sala({ codigo: 'X', baralho: [baralho[0]], config: { niveis: ['complexo'] } }), /Nenhuma carta/);
+});
