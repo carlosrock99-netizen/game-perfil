@@ -12,7 +12,7 @@ const BARALHO = [carta(1, 'pessoa', 'Santos Dumont', ['Alberto Santos-Dumont']),
 function salaPronta(config = {}) {
   let s = 42;
   const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
-  const sala = new Sala({ codigo: 'TESTE', baralho: BARALHO, config: { especiais: false, ...config }, rnd });
+  const sala = new Sala({ codigo: 'TESTE', baralho: BARALHO, config: { especiais: false, modo: 'digitado', ...config }, rnd });
   sala.adicionarJogador({ id: 'a', nome: 'Ana' });
   sala.adicionarJogador({ id: 'b', nome: 'Beto' });
   sala.adicionarJogador({ id: 'c', nome: 'Caio' });
@@ -132,4 +132,55 @@ test('quem entra no meio da carta joga a partir da próxima', () => {
   assert.ok(s.visao().jogadores.find((j) => j.id === 'd').fora);
   s.revelar(); s.proximaCarta();
   assert.ok(!s.visao().jogadores.find((j) => j.id === 'd').fora);
+});
+
+// ---------- modo mediador ----------
+function salaMediador(config = {}) { return salaPronta({ modo: 'mediador', ...config }); }
+
+test('mediador roda a cada carta e não joga na sua carta', () => {
+  const s = salaMediador();
+  const m1 = s.mediador;
+  assert.ok(m1);
+  assert.notEqual(daVez(s), m1);
+  assert.ok(s.visao().jogadores.find((j) => j.id === m1).fora);
+  s.revelar(); s.proximaCarta();
+  assert.notEqual(s.mediador, m1);
+});
+
+test('mediador abre a dica pelo jogador e confirma o acerto; os dois andam as dicas fechadas', () => {
+  const s = salaMediador();
+  const m = s.mediador; const j = daVez(s);
+  s.abrirDica(m, 1); s.abrirDica; // mediador abre por quem está na vez
+  for (let n = 2; n <= 8; n++) { s.julgar(m, 'passou'); s.abrirDica(daVez(s), n); }
+  const quem = daVez(s);
+  s.julgar(m, 'acertou');
+  assert.equal(s.jogador(quem).casa, 12);
+  assert.equal(s.jogador(m).casa, 12);
+  assert.equal(s.acerto.mediador.casas, 12);
+  assert.ok(j);
+});
+
+test('modo mediador: chute digitado é recusado e errou tira da carta', () => {
+  const s = salaMediador();
+  const m = s.mediador; const j = daVez(s);
+  s.abrirDica(j, 1);
+  assert.throws(() => s.chutar(j, s.carta.resposta), /voz alta/);
+  assert.throws(() => s.julgar(j, 'acertou'), /Só o mediador/);
+  s.julgar(m, 'errou');
+  assert.ok(s.fora.has(j));
+});
+
+test('resposta só aparece no segredo do mediador', () => {
+  const s = salaMediador();
+  assert.ok(!JSON.stringify(s.visao()).includes(s.carta.resposta));
+  const seg = s.segredo();
+  assert.equal(seg.para, s.mediador);
+  assert.equal(seg.resposta, s.carta.resposta);
+  assert.equal(seg.dicas.length, 20);
+});
+
+test('se o mediador sai, a carta é encerrada', () => {
+  const s = salaMediador();
+  s.remover(s.mediador);
+  assert.equal(s.fase, 'revelada');
 });

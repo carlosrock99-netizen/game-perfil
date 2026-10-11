@@ -153,3 +153,20 @@ input:not([type=checkbox]) { background: var(--mesa); color: var(--tinta); borde
 .largada-item { display: inline-flex; gap: 6px; align-items: center; font-size: 14px; }
 
 @media (prefers-reduced-motion: reduce) { * { animation: none !important; transition: none !important; } }
+
+/* mediador */
+.tag.mediador { background: var(--especial); color: #1b0b2e; }
+.vez.mediador { border-color: var(--especial); }
+.segredo { background: var(--carta); color: var(--carta-tinta); border-radius: 12px; padding: 12px 14px; display: flex; flex-direction: column; gap: 2px; }
+.segredo .rotulo { color: #6b5300; }
+.segredo strong { font-family: var(--f-display); font-size: clamp(28px, 6vw, 40px); line-height: 1.1; }
+.segredo small { color: #6b5300; }
+.ler { background: var(--mesa); border-radius: 12px; padding: 12px 14px; border-left: 4px solid var(--carta); }
+.ler p { margin: 4px 0 0; font-size: 20px; font-weight: 600; }
+.veredito { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+.botao.certo { background: var(--ok); border-color: var(--ok); color: #00331d; }
+.botao.errado { background: var(--erro); border-color: var(--erro); color: #2b0000; }
+.todas summary { cursor: pointer; font-weight: 700; }
+.todas ol { list-style: none; margin: 8px 0 0; padding: 0; display: flex; flex-direction: column; gap: 4px; font-size: 14px; }
+.todas li.lida { opacity: 0.45; text-decoration: line-through; }
+.todas li b { display: inline-block; min-width: 22px; }

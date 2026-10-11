@@ -16,7 +16,15 @@ real, o tabuleiro e as dicas especiais.
 2. A turma entra pelo QR code, pelo link de convite ou digitando o código de 5 letras.
 3. A ordem das vezes é sorteada. Na sua vez você **abre uma dica** da carta (1 a 20).
    A dica aparece para todos.
-4. Depois você **chuta** a resposta ou **passa a vez**.
+4. Depois você **dá o palpite** ou **passa a vez**. O palpite funciona de um de dois
+   jeitos, escolhidos ao criar a sala:
+   - **Mediador na roda (padrão):** a cada carta, o próximo jogador da roda vira
+     mediador. Só o celular dele mostra a resposta e as 20 dicas. Ele lê a dica em
+     voz alta, ouve o palpite falado e aperta **Acertou**, **Errou** ou **Passou**.
+     Nessa carta ele não joga. Quando alguém acerta, **o mediador anda o mesmo
+     número de casas** que o acertador. Se ninguém acerta, ninguém anda.
+   - **Palpite digitado:** o jogador digita o palpite e o jogo confere sozinho.
+     Serve para jogar a distância, por chamada de vídeo.
    - Acertou: anda **1 casa por dica ainda fechada** (mínimo 1).
    - Errou: fica fora desta carta e volta na próxima.
    - Todos erraram ou as 20 dicas acabaram: ninguém anda.
@@ -25,7 +33,7 @@ real, o tabuleiro e as dicas especiais.
    outra dica.
 6. Ganha quem chegar primeiro à casa final (30, 50 ou 80).
 
-O anfitrião também pode **valer um chute** que o sistema recusou (sinônimo, erro
+No modo digitado, o anfitrião também pode **valer um chute** que o sistema recusou (sinônimo, erro
 de digitação maior), **pular a vez** de quem sumiu, **revelar a resposta** e
 **remover jogadores**. Se alguém cair da internet na própria vez, a vez é pulada
 sozinha depois de 25 segundos.

@@ -22,6 +22,16 @@ export function useEstado() {
   return estado;
 }
 
+/** Resposta e dicas da carta: chega só no aparelho do mediador. */
+export function useSegredo() {
+  const [segredo, setSegredo] = useState(null);
+  useEffect(() => {
+    socket.on('segredo', setSegredo);
+    return () => socket.off('segredo', setSegredo);
+  }, []);
+  return segredo;
+}
+
 export function useConectado() {
   const [on, setOn] = useState(socket.connected);
   useEffect(() => {

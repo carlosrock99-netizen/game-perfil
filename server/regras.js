@@ -11,6 +11,13 @@
 //  - Vence quem chegar primeiro à casa final (meta).
 //  - Dicas especiais (opcional): ao abrir, além da dica, aplicam um efeito.
 //  - Carta nunca se repete na mesma partida.
+//
+// Dois modos:
+//  - digitado: o jogador digita o palpite e o servidor confere.
+//  - mediador: a cada carta um jogador da roda vira mediador. Só ele vê a
+//    resposta e as 20 dicas; lê a dica em voz alta, ouve o palpite falado e
+//    aperta Acertou, Errou ou Passou. Quando alguém acerta, o mediador anda o
+//    mesmo número de casas (as dicas que ficaram fechadas).
 
 const { verificar } = require('./palpite');
 
@@ -49,6 +56,7 @@ class Sala {
       temas: (config.temas || TEMAS).filter((t) => TEMAS.includes(t)),
       niveis: Array.isArray(config.niveis) ? config.niveis : [],
       especiais: config.especiais !== false,
+      modo: config.modo === 'digitado' ? 'digitado' : 'mediador',
     };
     if (!this.config.temas.length) this.config.temas = [...TEMAS];
     if (!this.baralho().length) falha('Nenhuma carta com esses temas e níveis.');
@@ -58,6 +66,8 @@ class Sala {
     this.vez = 0;
     this.iniciador = 0;
     this.carta = null;
+    this.numCarta = 0;
+    this.mediador = null;
     this.especiais = {};
     this.abertas = [];
     this.fora = new Set();
@@ -108,7 +118,9 @@ class Sala {
     if (!this.jogadores.length) { this.fase = 'lobby'; return this.mudou(); }
     if (ix < this.iniciador) this.iniciador--;
     this.iniciador %= this.jogadores.length;
-    if (this.fase === 'jogo') {
+    if (this.fase === 'jogo' && id === this.mediador) {
+      this.encerrarCarta('O mediador saiu da sala. A carta foi encerrada.');
+    } else if (this.fase === 'jogo') {
       if (daVez && daVez.id === id) {
         this.vez = (ix - 1 + this.jogadores.length) % this.jogadores.length;
         this.passarVez(`${daVez.nome} saiu da sala.`);
@@ -148,9 +160,17 @@ class Sala {
         this.especiais[n] = sortear(tipos, this.rnd);
       }
     }
+    this.numCarta++;
     this.fase = 'jogo';
     this.etapa = 'abrir';
-    this.vez = this.iniciador;
+    if (this.modoMediador()) {
+      this.mediador = this.jogadores[this.iniciador].id;
+      this.fora.add(this.mediador);
+      this.vez = (this.iniciador + 1) % this.jogadores.length;
+    } else {
+      this.mediador = null;
+      this.vez = this.iniciador;
+    }
     this.acerto = null;
     this.ultimoErro = null;
     this.evento = null;
@@ -175,6 +195,7 @@ class Sala {
     this.fase = 'lobby';
     this.etapa = null;
     this.carta = null;
+    this.mediador = null;
     this.vencedor = null;
     this.acerto = null;
     this.evento = null;
@@ -187,7 +208,7 @@ class Sala {
     n = Number(n);
     if (!Number.isInteger(n) || n < 1 || n > TOTAL_DICAS) falha('Número de dica inválido.');
     if (this.abertas.includes(n)) falha('Essa dica já está aberta.');
-    const j = this.jogador(id);
+    const j = this.jogadorDaVez();
     this.abertas.push(n);
     this.ultimoErro = null;
     this.evento = null;
@@ -209,6 +230,7 @@ class Sala {
 
   chutar(id, texto) {
     this.exigirVez(id, 'decidir');
+    if (this.modoMediador()) falha('Fale o palpite em voz alta. O mediador confirma.');
     const palpite = String(texto || '').trim().slice(0, 80);
     if (!palpite) falha('Digite um palpite.');
     const j = this.jogador(id);
@@ -222,7 +244,23 @@ class Sala {
 
   passar(id) {
     this.exigirVez(id, 'decidir');
-    this.passarVez(`${this.jogador(id).nome} passou a vez.`);
+    this.passarVez(`${this.jogadorDaVez().nome} passou a vez.`);
+    return this.mudou();
+  }
+
+  /** Modo mediador: o mediador diz se o palpite falado acertou. */
+  julgar(id, resultado) {
+    if (!this.modoMediador()) falha('Esta sala usa palpite digitado.');
+    if (this.fase !== 'jogo') falha('A carta não está em jogo.');
+    if (id !== this.mediador) falha('Só o mediador confirma o palpite.');
+    if (this.etapa !== 'decidir') falha('Primeiro abra uma dica.');
+    const j = this.jogadorDaVez();
+    if (resultado === 'acertou') this.pontuar(j, null);
+    else if (resultado === 'errou') {
+      this.fora.add(j.id);
+      this.passarVez(`${j.nome} errou o palpite. Está fora desta carta.`);
+    } else if (resultado === 'passou') this.passarVez(`${j.nome} passou a vez.`);
+    else falha('Resultado inválido.');
     return this.mudou();
   }
 
@@ -246,8 +284,13 @@ class Sala {
   pontuar(j, palpite, fechadas = TOTAL_DICAS - this.abertas.length) {
     const casas = Math.max(1, fechadas);
     j.acertos++;
-    this.acerto = { id: j.id, nome: j.nome, palpite, casas, abertas: TOTAL_DICAS - fechadas };
+    this.acerto = { id: j.id, nome: j.nome, palpite, casas, abertas: TOTAL_DICAS - fechadas, mediador: null };
     this.andar(j, casas);
+    const m = this.mediador && this.jogador(this.mediador);
+    if (m && !this.vencedor) {
+      this.andar(m, casas);
+      this.acerto.mediador = { id: m.id, nome: m.nome, casas };
+    }
     if (!this.vencedor) { this.fase = 'revelada'; this.etapa = null; }
   }
 
@@ -285,8 +328,25 @@ class Sala {
   exigirVez(id, etapa) {
     if (this.fase !== 'jogo') falha('A carta não está em jogo.');
     const j = this.jogadorDaVez();
-    if (!j || j.id !== id) falha('Não é a sua vez.');
+    const mediadorAgindo = this.modoMediador() && id === this.mediador;
+    if (!j || (j.id !== id && !mediadorAgindo)) falha('Não é a sua vez.');
     if (this.etapa !== etapa) falha(etapa === 'abrir' ? 'Primeiro chute ou passe a vez.' : 'Primeiro abra uma dica.');
+  }
+
+  modoMediador() { return this.config.modo === 'mediador'; }
+
+  /** O que só o mediador pode ver: resposta e todas as dicas. */
+  segredo() {
+    if (!this.mediador || this.fase !== 'jogo') return null;
+    return {
+      para: this.mediador,
+      numCarta: this.numCarta,
+      resposta: this.carta.resposta,
+      alternativas: this.carta.alternativas,
+      dicas: this.carta.dicas.map((d, i) => ({
+        n: i + 1, texto: d.texto, especial: this.especiais[i + 1] ? ESPECIAIS[this.especiais[i + 1]] : null,
+      })),
+    };
   }
 
   jogador(id) { return this.jogadores.find((j) => j.id === id); }
@@ -309,6 +369,8 @@ class Sala {
         id: j.id, nome: j.nome, cor: j.cor, casa: j.casa, acertos: j.acertos, online: j.online, fora: this.fora.has(j.id),
       })),
       vez: this.jogadorDaVez()?.id ?? null,
+      mediador: this.mediador,
+      numCarta: this.numCarta,
       carta: c && {
         categoria: c.categoria,
         resposta: mostrarResposta ? c.resposta : null,

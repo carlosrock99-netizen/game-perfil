@@ -126,7 +126,8 @@ export function Placar({ estado, meuId, souHost }) {
               {j.nome}
               {j.id === meuId && <span className="sutil"> (você)</span>}
               {!j.online && <span className="tag">sem conexão</span>}
-              {j.fora && estado.fase === 'jogo' && <span className="tag">fora da carta</span>}
+              {estado.fase === 'jogo' && estado.mediador === j.id && <span className="tag mediador">mediador</span>}
+              {j.fora && estado.fase === 'jogo' && estado.mediador !== j.id && <span className="tag">fora da carta</span>}
             </span>
             {emJogo && <span className="pts" title="casa no tabuleiro">{j.casa}</span>}
             {souHost && j.id !== meuId && estado.fase !== 'fim' && (
@@ -177,6 +178,7 @@ export function PainelVez({ estado, meuId }) {
   const [erro, setErro] = useState('');
   const [enviando, setEnviando] = useState(false);
   const daVez = estado.jogadores.find((j) => j.id === estado.vez);
+  const mediador = estado.jogadores.find((j) => j.id === estado.mediador);
   const minhaVez = meuId && estado.vez === meuId;
   const eu = estado.jogadores.find((j) => j.id === meuId);
   const vale = Math.max(1, estado.totalDicas - (estado.carta?.dicas.length || 0));
@@ -198,9 +200,18 @@ export function PainelVez({ estado, meuId }) {
         <span className="bola" style={{ background: daVez?.cor }} />
         {minhaVez ? 'Você joga agora' : daVez?.nome}
       </h2>
+      {mediador && <p className="sutil">Mediador desta carta: <b>{mediador.nome}</b></p>}
       {estado.evento && <p className="aviso">{estado.evento}</p>}
-      {minhaVez && estado.etapa === 'abrir' && <p className="instrucao">Toque num número da carta para abrir uma dica.</p>}
-      {minhaVez && estado.etapa === 'decidir' && (
+      {minhaVez && estado.etapa === 'abrir' && (
+        <p className="instrucao">{mediador ? 'Fale um número para o mediador ou toque nele na carta.' : 'Toque num número da carta para abrir uma dica.'}</p>
+      )}
+      {minhaVez && estado.etapa === 'decidir' && mediador && (
+        <>
+          <p className="instrucao">Fale seu palpite em voz alta. Acertar agora vale <b>{vale}</b> casa{vale > 1 ? 's' : ''}. O mediador confirma.</p>
+          <button type="button" className="botao fantasma" disabled={enviando} onClick={() => jogar({ tipo: 'passar' })}>Passar a vez</button>
+        </>
+      )}
+      {minhaVez && estado.etapa === 'decidir' && !mediador && (
         <>
           <p className="instrucao">Acertar agora vale <b>{vale}</b> casa{vale > 1 ? 's' : ''}. Errou, fica fora desta carta.</p>
           <form className="linha" onSubmit={(e) => { e.preventDefault(); if (palpite.trim()) jogar({ tipo: 'chutar', texto: palpite }); }}>
@@ -212,6 +223,67 @@ export function PainelVez({ estado, meuId }) {
       )}
       {!minhaVez && eu?.fora && <p className="sutil">Você errou o chute. Volta a jogar na próxima carta.</p>}
       {!minhaVez && !eu?.fora && <p className="sutil">{estado.etapa === 'abrir' ? 'Escolhendo uma dica…' : 'Pensando no palpite…'}</p>}
+      {erro && <p className="erro">{erro}</p>}
+    </section>
+  );
+}
+
+/** Painel de quem é o mediador da carta: resposta, dica para ler e o veredito. */
+export function PainelMediador({ estado, segredo }) {
+  const [erro, setErro] = useState('');
+  const [enviando, setEnviando] = useState(false);
+  const daVez = estado.jogadores.find((j) => j.id === estado.vez);
+  const ultima = estado.carta?.dicas[estado.carta.dicas.length - 1];
+  const vale = Math.max(1, estado.totalDicas - (estado.carta?.dicas.length || 0));
+  const abertas = new Set(estado.carta?.dicas.map((d) => d.n));
+
+  const julgar = async (resultado) => {
+    setEnviando(true); setErro('');
+    const r = await pedir('jogada', { tipo: 'julgar', resultado });
+    setEnviando(false);
+    if (!r.ok) setErro(r.erro);
+  };
+
+  return (
+    <section className="painel vez minha mediador" aria-live="polite">
+      <span className="rotulo">Você é o mediador desta carta</span>
+      <div className="segredo">
+        <span className="rotulo">Resposta (não mostre)</span>
+        <strong>{segredo ? segredo.resposta : '…'}</strong>
+        {segredo?.alternativas?.length > 0 && <small>Também vale: {segredo.alternativas.join(', ')}</small>}
+      </div>
+      <p className="sutil">Vez de <b>{daVez?.nome}</b>.</p>
+      {estado.evento && <p className="aviso">{estado.evento}</p>}
+      {estado.etapa === 'abrir' && <p className="instrucao">Peça um número para {daVez?.nome} e toque nele na carta.</p>}
+      {estado.etapa === 'decidir' && (
+        <>
+          {ultima && (
+            <div className="ler">
+              <span className="rotulo">Leia em voz alta · dica {ultima.n}</span>
+              <p>{ultima.texto}</p>
+              {ultima.especial && <em className="selo">{ultima.especial}</em>}
+            </div>
+          )}
+          <p className="instrucao">{daVez?.nome} fala o palpite. Acertar vale <b>{vale}</b> casa{vale > 1 ? 's' : ''} para cada um de vocês.</p>
+          <div className="veredito">
+            <button type="button" className="botao certo" disabled={enviando} onClick={() => julgar('acertou')}>Acertou</button>
+            <button type="button" className="botao errado" disabled={enviando} onClick={() => julgar('errou')}>Errou</button>
+            <button type="button" className="botao fantasma" disabled={enviando} onClick={() => julgar('passou')}>Passou</button>
+          </div>
+        </>
+      )}
+      {segredo && (
+        <details className="todas">
+          <summary>Ver as 20 dicas</summary>
+          <ol>
+            {segredo.dicas.map((d) => (
+              <li key={d.n} className={abertas.has(d.n) ? 'lida' : ''}>
+                <b>{d.n}</b> {d.texto}{d.especial && <em className="selo">{d.especial}</em>}
+              </li>
+            ))}
+          </ol>
+        </details>
+      )}
       {erro && <p className="erro">{erro}</p>}
     </section>
   );
@@ -229,7 +301,10 @@ export function Resultado({ estado, souHost }) {
           <h2 className="vencedor">{vencedor?.nome} venceu!</h2>
         </>
       ) : acerto ? (
-        <p className="aviso ok"><b>{acerto.nome}</b> acertou com {acerto.abertas} dica{acerto.abertas > 1 ? 's' : ''} abertas e andou <b>{acerto.casas}</b> casa{acerto.casas > 1 ? 's' : ''}.</p>
+        <p className="aviso ok">
+          <b>{acerto.nome}</b> acertou com {acerto.abertas} dica{acerto.abertas > 1 ? 's' : ''} aberta{acerto.abertas > 1 ? 's' : ''} e andou <b>{acerto.casas}</b> casa{acerto.casas > 1 ? 's' : ''}.
+          {acerto.mediador && <> O mediador <b>{acerto.mediador.nome}</b> também andou {acerto.mediador.casas}.</>}
+        </p>
       ) : (
         <p className="aviso">{evento}</p>
       )}

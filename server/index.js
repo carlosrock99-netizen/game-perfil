@@ -35,6 +35,16 @@ function log(...a) { console.log(new Date().toISOString(), ...a); }
 function transmitir(reg) {
   reg.tocadaEm = Date.now();
   io.to(reg.sala.codigo).emit('estado', reg.sala.visao());
+  enviarSegredo(reg);
+}
+
+/** A resposta vai só para os aparelhos do mediador da carta. */
+function enviarSegredo(reg, apenasSocket) {
+  const seg = reg.sala.segredo();
+  if (!seg) return;
+  const alvos = apenasSocket ? [apenasSocket]
+    : [...(io.sockets.adapter.rooms.get(reg.sala.codigo) || [])].map((sid) => io.sockets.sockets.get(sid));
+  for (const s of alvos) if (s && s.data.id === seg.para) s.emit('segredo', seg);
 }
 
 function buscar(codigo) {
@@ -118,13 +128,14 @@ io.on('connection', (socket) => {
     return {};
   }));
 
-  socket.on('jogada', seguro(({ tipo, n, texto }) => {
+  socket.on('jogada', seguro(({ tipo, n, texto, resultado }) => {
     const reg = exigirJogador();
     const { sala } = reg;
     const id = socket.data.id;
     if (tipo === 'abrir') sala.abrirDica(id, n);
     else if (tipo === 'chutar') sala.chutar(id, texto);
     else if (tipo === 'passar') sala.passar(id);
+    else if (tipo === 'julgar') sala.julgar(id, resultado);
     else throw new ErroJogo('Jogada desconhecida.');
     transmitir(reg);
     return {};

@@ -11,6 +11,7 @@ export default function Inicio() {
   const [temas, setTemas] = useState(TEMAS);
   const [meta, setMeta] = useState(50);
   const [especiais, setEspeciais] = useState(true);
+  const [modo, setModo] = useState('mediador');
   const [codigo, setCodigo] = useState('');
   const [erro, setErro] = useState('');
   const [baralho, setBaralho] = useState(null);
@@ -27,7 +28,7 @@ export default function Inicio() {
     if (!temas.length) return setErro('Escolha pelo menos um tema.');
     setOcupado(true); setErro('');
     guardar.gravar('nome', nome.trim());
-    const r = await pedir('criar', { nome: vouJogar ? nome.trim() : null, config: { temas, meta, especiais } });
+    const r = await pedir('criar', { nome: vouJogar ? nome.trim() : null, config: { temas, meta, especiais, modo } });
     setOcupado(false);
     if (!r.ok) return setErro(r.erro);
     guardar.gravar(`host:${r.codigo}`, { hostChave: r.hostChave, chave: r.chave || null });
@@ -61,6 +62,16 @@ export default function Inicio() {
             <input id="vou-jogar" type="checkbox" checked={vouJogar} onChange={(e) => setVouJogar(e.target.checked)} />
             Também vou jogar deste aparelho
           </label>
+          <fieldset className="campo">
+            <legend className="rotulo">Como se dá o palpite</legend>
+            <div className="opcoes">
+              <button type="button" className={`opcao${modo === 'mediador' ? ' marcada' : ''}`} aria-pressed={modo === 'mediador'} onClick={() => setModo('mediador')}>Mediador na roda</button>
+              <button type="button" className={`opcao${modo === 'digitado' ? ' marcada' : ''}`} aria-pressed={modo === 'digitado'} onClick={() => setModo('digitado')}>Palpite digitado</button>
+            </div>
+            <span className="sutil">{modo === 'mediador'
+              ? 'A cada carta um jogador vira mediador: vê a resposta, lê as dicas e confirma o palpite falado. Melhor para jogar junto.'
+              : 'Cada um digita o palpite e o jogo confere sozinho. Melhor para jogar a distância.'}</span>
+          </fieldset>
           <fieldset className="campo">
             <legend className="rotulo">Temas</legend>
             <div className="opcoes">
@@ -100,9 +111,10 @@ export default function Inicio() {
           <section className="painel regras">
             <h2>Como joga</h2>
             <ol>
-              <li>Na sua vez, abra uma dica da carta. Todos veem a dica.</li>
-              <li>Chute a resposta ou passe a vez. Errou o chute, fica fora até a próxima carta.</li>
-              <li>Quem acerta anda 1 casa por dica ainda fechada.</li>
+              <li>A cada carta, um jogador da roda é o mediador e vê a resposta.</li>
+              <li>Na sua vez, escolha um número. O mediador lê a dica em voz alta.</li>
+              <li>Fale o palpite ou passe a vez. Errou, fica fora até a próxima carta.</li>
+              <li>Quem acerta anda 1 casa por dica ainda fechada. O mediador anda o mesmo tanto.</li>
               <li>Ganha quem chegar primeiro à casa final.</li>
             </ol>
           </section>

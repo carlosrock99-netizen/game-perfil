@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { pedir, guardar, irPara, useEstado, useConectado, useAoConectar } from '../conexao';
-import { Carta, Tabuleiro, Placar, Convite, PainelVez, Resultado } from '../components/Jogo';
+import { pedir, guardar, irPara, useEstado, useConectado, useAoConectar, useSegredo } from '../conexao';
+import { Carta, Tabuleiro, Placar, Convite, PainelVez, PainelMediador, Resultado } from '../components/Jogo';
 
 /**
  * Uma só tela para o anfitrião (telão) e para o jogador (celular).
@@ -10,6 +10,7 @@ import { Carta, Tabuleiro, Placar, Convite, PainelVez, Resultado } from '../comp
 export default function Mesa({ codigo, modo }) {
   const souHost = modo === 'host';
   const estado = useEstado();
+  const segredo = useSegredo();
   const conectado = useConectado();
   const [meuId, setMeuId] = useState(null);
   const [erro, setErro] = useState('');
@@ -88,7 +89,9 @@ export default function Mesa({ codigo, modo }) {
     );
   }
 
-  const podeAbrir = !!meuId && estado.vez === meuId && estado.etapa === 'abrir';
+  const souMediador = !!meuId && estado.fase === 'jogo' && estado.mediador === meuId;
+  const podeAbrir = !!meuId && estado.etapa === 'abrir' && (estado.vez === meuId || souMediador);
+  const segredoAtual = souMediador && segredo && segredo.numCarta === estado.numCarta ? segredo : null;
   const lobby = estado.fase === 'lobby';
 
   return (
@@ -124,7 +127,8 @@ export default function Mesa({ codigo, modo }) {
       ) : (
         <div className="grade-mesa">
           <div className="coluna">
-            {meuId && <PainelVez estado={estado} meuId={meuId} />}
+            {souMediador && <PainelMediador estado={estado} segredo={segredoAtual} />}
+            {meuId && !souMediador && <PainelVez estado={estado} meuId={meuId} />}
             {!meuId && estado.fase === 'jogo' && <VezTelao estado={estado} />}
             <Resultado estado={estado} souHost={souHost} />
             <Carta estado={estado} podeAbrir={podeAbrir} aoAbrir={abrir} />
@@ -161,8 +165,9 @@ function VezTelao({ estado }) {
     <section className="painel vez" aria-live="polite">
       <span className="rotulo">Vez de</span>
       <h2 className="vez-nome"><span className="bola" style={{ background: j?.cor }} />{j?.nome}</h2>
+      {estado.mediador && <p className="sutil">Mediador: <b>{estado.jogadores.find((x) => x.id === estado.mediador)?.nome}</b></p>}
       {estado.evento && <p className="aviso">{estado.evento}</p>}
-      <p className="sutil">{estado.etapa === 'abrir' ? 'Escolhendo uma dica…' : 'Pensando no palpite…'}</p>
+      <p className="sutil">{estado.etapa === 'abrir' ? 'Escolhendo uma dica…' : estado.mediador ? 'Falando o palpite…' : 'Pensando no palpite…'}</p>
     </section>
   );
 }
