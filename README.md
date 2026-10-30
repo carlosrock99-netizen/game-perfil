@@ -225,7 +225,7 @@ tsconfig.json  checagem de tipos (JSDoc + @ts-check)
   página devolve o jogador à mesma vaga. A tela do anfitrião tem uma chave própria.
 - As salas ficam na memória do servidor e são apagadas depois de 6 horas paradas.
   Se o servidor reiniciar, as salas em andamento se perdem.
-- Até 12 jogadores por sala.
+- Até 20 jogadores por sala.
 
 ## Roteiro
 

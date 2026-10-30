@@ -55,8 +55,12 @@
 const { verificar } = require('./palpite');
 
 const TOTAL_DICAS = 20;
-const MAX_JOGADORES = 12;
-const CORES = ['#ff6b6b', '#4dabf7', '#3ddc97', '#ffa94d', '#c084fc', '#f783ac', '#20c997', '#fcc419', '#a9e34b', '#e599f7', '#74c0fc', '#ff8787'];
+const MAX_JOGADORES = 20;
+const CORES = [
+  '#ff6b6b', '#4dabf7', '#3ddc97', '#ffa94d', '#c084fc', '#f783ac', '#20c997', '#fcc419',
+  '#a9e34b', '#e599f7', '#74c0fc', '#ff8787', '#63e6be', '#b197fc', '#ffd43b', '#8ce99a',
+  '#66d9e8', '#ffc078', '#faa2c1', '#c0eb75',
+];
 const ESPECIAIS = {
   perca: 'Perca a vez',
   avance: 'Avance 3 casas',

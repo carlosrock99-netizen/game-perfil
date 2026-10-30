@@ -136,6 +136,7 @@ input:not([type=checkbox]) { background: var(--mesa); color: var(--tinta); borde
 .placar .pts { font-family: var(--f-display); font-weight: 800; font-size: 20px; font-variant-numeric: tabular-nums; }
 .bola { width: 14px; height: 14px; border-radius: 50%; flex: none; display: inline-block; }
 .ordem { margin: 0; }
+.telao .placar { max-height: 44vh; overflow: auto; }
 
 /* tabuleiro */
 .tabuleiro { display: grid; grid-template-columns: repeat(10, minmax(0, 1fr)); gap: 4px; }

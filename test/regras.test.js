@@ -274,3 +274,19 @@ test('desfazer sem histórico é recusado', () => {
   const s = salaPronta();
   assert.throws(() => s.desfazer(), ErroJogo);
 });
+
+// ---------- limite de jogadores ----------
+test('sala aceita 15 jogadores, com cores distintas, e inicia', () => {
+  const s = new Sala({ codigo: 'MUITOS', baralho: BARALHO, config: { modo: 'digitado', especiais: false } });
+  for (let i = 0; i < 15; i++) s.adicionarJogador({ id: 'j' + i, nome: 'Jogador ' + i });
+  assert.equal(s.jogadores.length, 15);
+  assert.equal(new Set(s.jogadores.map((j) => j.cor)).size, 15);
+  s.iniciar();
+  assert.equal(s.fase, 'jogo');
+});
+
+test('sala recusa o 21º jogador', () => {
+  const s = new Sala({ codigo: 'CAP', baralho: BARALHO, config: { modo: 'digitado' } });
+  for (let i = 0; i < 20; i++) s.adicionarJogador({ id: 'k' + i, nome: 'K' + i });
+  assert.throws(() => s.adicionarJogador({ id: 'k20', nome: 'K20' }), /já tem 20/);
+});
