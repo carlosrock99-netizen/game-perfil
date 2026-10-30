@@ -181,3 +181,18 @@ input:not([type=checkbox]) { background: var(--mesa); color: var(--tinta); borde
 .opcao.nivel-medio.marcada { background: #74c0fc; border-color: #74c0fc; }
 .opcao.nivel-dificil.marcada { background: #ffa94d; border-color: #ffa94d; }
 .opcao.nivel-complexo.marcada { background: #d0a3ff; border-color: #d0a3ff; }
+
+/* barra direita: relógio da vez + som */
+.barra-dir { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.relogio { font-family: var(--f-display); font-weight: 800; font-variant-numeric: tabular-nums; background: var(--mesa-2); border: 1px solid var(--linha); border-radius: 999px; padding: 4px 12px; font-size: 16px; }
+.relogio.urgente { background: var(--erro); color: #2b0000; border-color: var(--erro); animation: pulsa 1s ease-in-out infinite; }
+.botao.mini.off { opacity: 0.5; }
+@keyframes pulsa { 50% { opacity: 0.55; } }
+
+/* dica em destaque no telão (modo apresentação) */
+.dica-destaque { border: 0; background: linear-gradient(180deg, var(--mesa-3), var(--mesa-2)); border-left: 6px solid var(--carta); }
+.dica-grande { margin: 0; font-family: var(--f-display); font-weight: 800; font-size: clamp(22px, 3.4vw, 40px); line-height: 1.2; text-wrap: pretty; }
+.apresentacao .grade-mesa { align-items: start; }
+.segredo-telao summary { cursor: pointer; font-weight: 700; }
+.segredo-telao strong { display: block; margin-top: 6px; }
+.segredo-telao small { display: block; }

@@ -230,7 +230,7 @@ export function PainelVez({ estado, meuId }) {
 }
 
 /** Painel de quem é o mediador da carta: resposta, dica para ler e o veredito. */
-export function PainelMediador({ estado, segredo }) {
+export function PainelMediador({ estado, segredo, telao }) {
   const [erro, setErro] = useState('');
   const [enviando, setEnviando] = useState(false);
   const daVez = estado.jogadores.find((j) => j.id === estado.vez);
@@ -250,8 +250,18 @@ export function PainelMediador({ estado, segredo }) {
       <span className="rotulo">Você é o mediador desta carta</span>
       <div className="segredo">
         <span className="rotulo">Resposta (não mostre)</span>
-        <strong>{segredo ? segredo.resposta : '…'}</strong>
-        {segredo?.alternativas?.length > 0 && <small>Também vale: {segredo.alternativas.join(', ')}</small>}
+        {telao ? (
+          <details className="segredo-telao">
+            <summary>Toque para ver</summary>
+            <strong>{segredo ? segredo.resposta : '…'}</strong>
+            {segredo?.alternativas?.length > 0 && <small>Também vale: {segredo.alternativas.join(', ')}</small>}
+          </details>
+        ) : (
+          <>
+            <strong>{segredo ? segredo.resposta : '…'}</strong>
+            {segredo?.alternativas?.length > 0 && <small>Também vale: {segredo.alternativas.join(', ')}</small>}
+          </>
+        )}
       </div>
       <p className="sutil">Vez de <b>{daVez?.nome}</b>.</p>
       {estado.evento && <p className="aviso">{estado.evento}</p>}
@@ -316,6 +326,32 @@ export function Resultado({ estado, souHost }) {
       ) : (
         <p className="sutil">{fase === 'fim' ? 'O anfitrião pode começar outra partida.' : 'O anfitrião puxa a próxima carta.'}</p>
       )}
+    </section>
+  );
+}
+
+/** Relógio da vez (só aparece quando o cronômetro está ligado). */
+export function Relogio({ estado, restante }) {
+  if (!estado?.tempo) return null;
+  const v = restante ?? estado.tempoRestante;
+  const urgente = v != null && v <= 10;
+  return (
+    <span className={`relogio${urgente ? ' urgente' : ''}`} title="Tempo da vez" aria-live="off">
+      ⏱ {v != null ? `${v}s` : '—'}
+    </span>
+  );
+}
+
+/** Dica em destaque no telão: a última dica aberta, em letra grande. */
+export function DicaDestaque({ estado }) {
+  const dicas = estado?.carta?.dicas;
+  const ultima = dicas && dicas.length ? dicas[dicas.length - 1] : null;
+  if (!ultima) return null;
+  return (
+    <section className="painel dica-destaque" aria-live="polite">
+      <span className="rotulo">Dica {ultima.n} de {estado.totalDicas}</span>
+      <p className="dica-grande">{ultima.texto}</p>
+      {ultima.especial && <em className="selo">{ultima.especial}</em>}
     </section>
   );
 }

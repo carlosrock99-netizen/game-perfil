@@ -1,5 +1,13 @@
 // Conferência de palpite. Portado de AdrielFerr/perfil (Normalizador.php e
 // VerificadorPalpite.php, licença MIT) para JavaScript.
+// @ts-check
+
+/**
+ * @typedef {Object} ResultadoPalpite
+ * @property {boolean} acertou
+ * @property {string|null} correspondencia
+ * @property {boolean} exata
+ */
 
 const PALAVRAS_VAZIAS = new Set([
   'a', 'as', 'o', 'os', 'um', 'uma', 'uns', 'umas', 'de', 'da', 'do', 'das', 'dos', 'd',
@@ -9,6 +17,10 @@ const PALAVRAS_VAZIAS = new Set([
 const LIMITE_SEMELHANCA = 0.86;
 const TAMANHO_MINIMO_TOLERANCIA = 6;
 
+/**
+ * @param {string} texto
+ * @returns {string}
+ */
 function normalizar(texto) {
   return String(texto ?? '')
     .toLowerCase()
@@ -21,6 +33,11 @@ function normalizar(texto) {
 const compactar = (t) => normalizar(t).replace(/ /g, '');
 const semArtigoInicial = (n) => n.replace(/^(o|a|os|as|um|uma|the|le|la|el)\s+/, '');
 
+/**
+ * @param {string} texto
+ * @param {number} [minimo]
+ * @returns {string[]}
+ */
 function palavrasSignificativas(texto, minimo = 4) {
   const saida = [];
   for (const p of normalizar(texto).split(' ')) {
@@ -30,6 +47,11 @@ function palavrasSignificativas(texto, minimo = 4) {
   return saida;
 }
 
+/**
+ * @param {string} a
+ * @param {string} b
+ * @returns {number}
+ */
 function levenshtein(a, b) {
   const linha = Array.from({ length: b.length + 1 }, (_, i) => i);
   for (let i = 1; i <= a.length; i++) {
@@ -44,6 +66,11 @@ function levenshtein(a, b) {
   return linha[b.length];
 }
 
+/**
+ * @param {string} a
+ * @param {string} b
+ * @returns {number}
+ */
 function semelhanca(a, b) {
   a = normalizar(a); b = normalizar(b);
   if (a === b) return 1;
@@ -51,7 +78,12 @@ function semelhanca(a, b) {
   return maior === 0 ? 0 : 1 - levenshtein(a, b) / maior;
 }
 
-/** @returns {{acertou:boolean, correspondencia:string|null, exata:boolean}} */
+/**
+ * @param {string} palpite
+ * @param {string} resposta
+ * @param {string[]} [alternativas]
+ * @returns {ResultadoPalpite}
+ */
 function verificar(palpite, resposta, alternativas = []) {
   const p = normalizar(palpite);
   const nada = { acertou: false, correspondencia: null, exata: false };

@@ -197,3 +197,80 @@ test('filtro de nível: só saem cartas dos níveis escolhidos', () => {
   assert.equal(s.visao().carta.nivel, 'complexo');
   assert.throws(() => new Sala({ codigo: 'X', baralho: [baralho[0]], config: { niveis: ['complexo'] } }), /Nenhuma carta/);
 });
+
+// ---------- cronômetro ----------
+function salaComTempo(config = {}) {
+  let t = 1000;
+  let s = 42;
+  const rnd = () => (s = (s * 9301 + 49297) % 233280) / 233280;
+  const sala = new Sala({
+    codigo: 'TEMPO', baralho: BARALHO,
+    config: { especiais: false, modo: 'digitado', tempo: 10, ...config },
+    rnd, now: () => t,
+  });
+  sala.adicionarJogador({ id: 'a', nome: 'Ana' });
+  sala.adicionarJogador({ id: 'b', nome: 'Beto' });
+  sala.iniciar();
+  return { sala, avancar: (ms) => { t += ms; } };
+}
+
+test('cronômetro expõe tempo restante e passa a vez ao estourar', () => {
+  const { sala, avancar } = salaComTempo();
+  assert.equal(sala.visao().tempo, 10);
+  assert.equal(sala.visao().tempoRestante, 10);
+  assert.equal(sala.expirouVez(), false);
+  avancar(10_000);
+  assert.equal(sala.expirouVez(), true);
+  const antes = sala.jogadorDaVez().id;
+  sala.tempoEsgotado();
+  assert.notEqual(sala.jogadorDaVez().id, antes);
+  assert.equal(sala.visao().tempoRestante, 10); // nova vez recomeça o relógio
+});
+
+test('cronômetro desligado (tempo 0) não expira', () => {
+  const s = salaPronta();
+  assert.equal(s.visao().tempo, 0);
+  assert.equal(s.visao().tempoRestante, null);
+  assert.equal(s.expirouVez(), false);
+});
+
+test('abrir uma dica reinicia o cronômetro da vez', () => {
+  const { sala, avancar } = salaComTempo();
+  avancar(3_000);
+  const id = sala.jogadorDaVez().id;
+  sala.abrirDica(id, 1); // vai para "decidir", novo relógio
+  assert.equal(sala.visao().tempoRestante, 10);
+});
+
+// ---------- desfazer ----------
+test('desfazer restaura a jogada anterior do anfitrião', () => {
+  const s = salaPronta();
+  const id = daVez(s);
+  const snap = s.snapshot();
+  s.abrirDica(id, 1);
+  s.empilhar(snap);
+  assert.equal(s.visao().carta.dicas.length, 1);
+  assert.equal(s.visao().podeDesfazer, true);
+  s.desfazer();
+  assert.equal(s.visao().carta.dicas.length, 0);
+  assert.equal(s.visao().podeDesfazer, false);
+});
+
+test('desfazer depois de um acerto volta a carta para o jogo', () => {
+  const s = salaPronta();
+  const id = daVez(s);
+  s.abrirDica(id, 1);
+  const snap = s.snapshot();
+  s.chutar(id, s.carta.resposta);
+  s.empilhar(snap);
+  assert.equal(s.fase, 'revelada');
+  assert.ok(s.jogador(id).casa > 0);
+  s.desfazer();
+  assert.equal(s.fase, 'jogo');
+  assert.equal(s.jogador(id).casa, 0);
+});
+
+test('desfazer sem histórico é recusado', () => {
+  const s = salaPronta();
+  assert.throws(() => s.desfazer(), ErroJogo);
+});

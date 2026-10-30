@@ -18,6 +18,39 @@
 //    resposta e as 20 dicas; lê a dica em voz alta, ouve o palpite falado e
 //    aperta Acertou, Errou ou Passou. Quando alguém acerta, o mediador anda o
 //    mesmo número de casas (as dicas que ficaram fechadas).
+// @ts-check
+
+/**
+ * @typedef {Object} Dica
+ * @property {number} n
+ * @property {string} texto
+ * @property {string} [dificuldade]
+ *
+ * @typedef {Object} Carta
+ * @property {number} id
+ * @property {string} categoria
+ * @property {string} resposta
+ * @property {string[]} [alternativas]
+ * @property {string} [fonte]
+ * @property {string|null} [nivel]
+ * @property {Dica[]} dicas
+ *
+ * @typedef {Object} Jogador
+ * @property {string} id
+ * @property {string} nome
+ * @property {string} cor
+ * @property {number} casa
+ * @property {number} acertos
+ * @property {boolean} online
+ *
+ * @typedef {Object} SalaConfig
+ * @property {number} meta
+ * @property {string[]} temas
+ * @property {string[]} niveis
+ * @property {boolean} especiais
+ * @property {'digitado'|'mediador'} modo
+ * @property {number} tempo
+ */
 
 const { verificar } = require('./palpite');
 
@@ -32,10 +65,25 @@ const ESPECIAIS = {
 };
 const TEMAS = ['pessoa', 'lugar', 'coisa', 'ano'];
 const NIVEIS = ['facil', 'medio', 'dificil', 'complexo'];
+const LIMITE_HISTORICO = 10; // quantas jogadas o anfitrião pode desfazer
+const TEMPO_MAX = 300; // segundos
+
+/** Normaliza o tempo por vez: 0 (ou < 5) desliga o cronômetro. */
+function normalizarTempo(valor) {
+  const n = Math.floor(Number(valor) || 0);
+  if (!n || n < 5) return 0;
+  return Math.min(TEMPO_MAX, n);
+}
 
 class ErroJogo extends Error {}
 const falha = (msg) => { throw new ErroJogo(msg); };
 
+/**
+ * @template T
+ * @param {T[]} lista
+ * @param {() => number} [rnd]
+ * @returns {T}
+ */
 function sortear(lista, rnd = Math.random) {
   return lista[Math.floor(rnd() * lista.length)];
 }
@@ -44,13 +92,15 @@ class Sala {
   /**
    * @param {object} p
    * @param {string} p.codigo
-   * @param {object[]} p.baralho cartas no formato de data/cartas.json
-   * @param {object} [p.config] {meta, temas, niveis, especiais}
-   * @param {Function} [p.rnd] gerador aleatório (para testes)
+   * @param {Carta[]} p.baralho cartas no formato de data/cartas.json
+   * @param {Partial<SalaConfig>} [p.config] {meta, temas, niveis, especiais, modo, tempo}
+   * @param {() => number} [p.rnd] gerador aleatório (para testes)
+   * @param {() => number} [p.now] relógio em ms (para testar o cronômetro)
    */
-  constructor({ codigo, baralho, config = {}, rnd = Math.random }) {
+  constructor({ codigo, baralho, config = {}, rnd = Math.random, now = Date.now }) {
     this.codigo = codigo;
     this.rnd = rnd;
+    this.now = now;
     this.baralhoCompleto = baralho;
     this.config = {
       meta: Math.min(120, Math.max(10, Number(config.meta) || 50)),
@@ -58,6 +108,7 @@ class Sala {
       niveis: Array.isArray(config.niveis) ? config.niveis.filter((n) => NIVEIS.includes(n)) : [],
       especiais: config.especiais !== false,
       modo: config.modo === 'digitado' ? 'digitado' : 'mediador',
+      tempo: normalizarTempo(config.tempo),
     };
     if (!this.config.temas.length) this.config.temas = [...TEMAS];
     if (!this.baralho().length) falha('Nenhuma carta com esses temas e níveis.');
@@ -78,6 +129,8 @@ class Sala {
     this.acerto = null;
     this.vencedor = null;
     this.versao = 0;
+    this.vezDesde = 0; // quando a ação pendente começou (base do cronômetro)
+    this.historico = []; // pilha de snapshots para o "desfazer" do anfitrião
   }
 
   baralho() {
@@ -175,6 +228,7 @@ class Sala {
     this.acerto = null;
     this.ultimoErro = null;
     this.evento = null;
+    this.marcarVez();
   }
 
   proximaCarta() {
@@ -193,6 +247,7 @@ class Sala {
   novaPartida() {
     for (const j of this.jogadores) { j.casa = 0; j.acertos = 0; }
     this.usadas.clear();
+    this.historico = [];
     this.fase = 'lobby';
     this.etapa = null;
     this.carta = null;
@@ -200,6 +255,7 @@ class Sala {
     this.vencedor = null;
     this.acerto = null;
     this.evento = null;
+    this.vezDesde = 0;
     return this.mudou();
   }
 
@@ -223,9 +279,11 @@ class Sala {
     if (especial === 'volte') { this.andar(j, -2); this.evento = `${j.nome} voltou 2 casas.`; }
     if (especial === 'outra' && this.abertas.length < TOTAL_DICAS) {
       this.evento = `${j.nome} abre outra dica.`;
+      this.marcarVez();
       return this.mudou();
     }
     this.etapa = 'decidir';
+    this.marcarVez();
     return this.mudou();
   }
 
@@ -313,6 +371,7 @@ class Sala {
       if (!this.fora.has(this.jogadores[ix].id)) {
         this.vez = ix;
         this.etapa = 'abrir';
+        this.marcarVez();
         return;
       }
     }
@@ -335,6 +394,92 @@ class Sala {
   }
 
   modoMediador() { return this.config.modo === 'mediador'; }
+
+  // ---------- cronômetro da vez ----------
+  /** Reinicia a contagem da ação pendente. */
+  marcarVez() { this.vezDesde = this.now(); }
+
+  /** Quem precisa agir agora (jogador da vez ou mediador, no modo mediador). */
+  quemPendente() {
+    if (this.fase !== 'jogo') return null;
+    if (this.etapa === 'decidir' && this.modoMediador()) return this.mediador;
+    const j = this.jogadorDaVez();
+    return j ? j.id : null;
+  }
+
+  /** Segundos que faltam para a ação atual, ou null se o cronômetro está desligado. */
+  tempoRestante() {
+    if (!this.config.tempo || !this.quemPendente()) return null;
+    const fim = this.vezDesde + this.config.tempo * 1000;
+    return Math.max(0, Math.ceil((fim - this.now()) / 1000));
+  }
+
+  /** O cronômetro estourou e alguém ainda não agiu? */
+  expirouVez() {
+    if (!this.config.tempo || !this.quemPendente()) return false;
+    return this.now() - this.vezDesde >= this.config.tempo * 1000;
+  }
+
+  /** Ação automática quando o tempo acaba: passa a vez de quem não respondeu. */
+  tempoEsgotado() {
+    if (!this.expirouVez()) return this.mudou();
+    const j = this.jogadorDaVez();
+    this.passarVez(`${j ? j.nome : 'O jogador'} não jogou a tempo.`);
+    return this.mudou();
+  }
+
+  // ---------- desfazer (anfitrião) ----------
+  /** Fotografia do estado de jogo, usada pelo "desfazer". */
+  snapshot() {
+    return {
+      fase: this.fase, etapa: this.etapa,
+      jogadores: this.jogadores.map((j) => ({ ...j })),
+      vez: this.vez, iniciador: this.iniciador,
+      carta: this.carta, numCarta: this.numCarta,
+      mediador: this.mediador,
+      especiais: { ...this.especiais },
+      abertas: [...this.abertas],
+      fora: [...this.fora],
+      usadas: [...this.usadas],
+      evento: this.evento,
+      ultimoErro: this.ultimoErro ? { ...this.ultimoErro } : null,
+      acerto: this.acerto ? JSON.parse(JSON.stringify(this.acerto)) : null,
+      vencedor: this.vencedor ? { ...this.vencedor } : null,
+      vezDesde: this.vezDesde,
+    };
+  }
+
+  /** Guarda uma fotografia no histórico (limitado a LIMITE_HISTORICO). */
+  empilhar(snap) {
+    this.historico.push(snap);
+    if (this.historico.length > LIMITE_HISTORICO) this.historico.shift();
+  }
+
+  /** Volta o estado de jogo para uma fotografia. */
+  restaurar(snap) {
+    this.fase = snap.fase; this.etapa = snap.etapa;
+    this.jogadores = snap.jogadores.map((j) => ({ ...j }));
+    this.vez = snap.vez; this.iniciador = snap.iniciador;
+    this.carta = snap.carta; this.numCarta = snap.numCarta;
+    this.mediador = snap.mediador;
+    this.especiais = { ...snap.especiais };
+    this.abertas = [...snap.abertas];
+    this.fora = new Set(snap.fora);
+    this.usadas = new Set(snap.usadas);
+    this.evento = snap.evento;
+    this.ultimoErro = snap.ultimoErro ? { ...snap.ultimoErro } : null;
+    this.acerto = snap.acerto ? JSON.parse(JSON.stringify(snap.acerto)) : null;
+    this.vencedor = snap.vencedor ? { ...snap.vencedor } : null;
+    this.vezDesde = snap.vezDesde;
+  }
+
+  /** O anfitrião desfaz a última jogada. */
+  desfazer() {
+    const snap = this.historico.pop();
+    if (!snap) falha('Não há jogada para desfazer.');
+    this.restaurar(snap);
+    return this.mudou();
+  }
 
   /** O que só o mediador pode ver: resposta e todas as dicas. */
   segredo() {
@@ -388,6 +533,10 @@ class Sala {
       ultimoErro: this.ultimoErro && { nome: this.ultimoErro.nome, palpite: this.ultimoErro.palpite },
       acerto: this.acerto,
       vencedor: this.vencedor,
+      tempo: this.config.tempo,
+      tempoRestante: this.tempoRestante(),
+      pendeDe: this.quemPendente(),
+      podeDesfazer: this.historico.length > 0,
     };
   }
 }

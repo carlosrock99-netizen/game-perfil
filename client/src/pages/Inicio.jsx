@@ -4,6 +4,13 @@ import { ROTULO_TEMA } from '../components/Jogo';
 
 const TEMAS = ['pessoa', 'lugar', 'coisa', 'ano'];
 const METAS = [30, 50, 80];
+const TEMPOS = [
+  { v: 0, nome: 'Sem tempo' },
+  { v: 20, nome: '20s' },
+  { v: 30, nome: '30s' },
+  { v: 45, nome: '45s' },
+  { v: 60, nome: '60s' },
+];
 const NIVEIS = [
   { id: 'facil', nome: 'Fácil', dica: 'objetos do dia a dia, nomes e datas que todo mundo conhece' },
   { id: 'medio', nome: 'Médio', dica: 'conhecimento geral, cultura brasileira e mundial' },
@@ -16,6 +23,7 @@ export default function Inicio() {
   const [vouJogar, setVouJogar] = useState(true);
   const [temas, setTemas] = useState(TEMAS);
   const [meta, setMeta] = useState(50);
+  const [tempo, setTempo] = useState(0);
   const [especiais, setEspeciais] = useState(true);
   const [modo, setModo] = useState('mediador');
   const [niveis, setNiveis] = useState(['facil', 'medio', 'dificil', 'complexo']);
@@ -41,7 +49,7 @@ export default function Inicio() {
     if (cartasDisponiveis !== null && cartasDisponiveis < 5) return setErro('Poucas cartas com esses temas e níveis. Marque mais opções.');
     setOcupado(true); setErro('');
     guardar.gravar('nome', nome.trim());
-    const r = await pedir('criar', { nome: vouJogar ? nome.trim() : null, config: { temas, niveis, meta, especiais, modo } });
+    const r = await pedir('criar', { nome: vouJogar ? nome.trim() : null, config: { temas, niveis, meta, especiais, modo, tempo } });
     setOcupado(false);
     if (!r.ok) return setErro(r.erro);
     guardar.gravar(`host:${r.codigo}`, { hostChave: r.hostChave, chave: r.chave || null });
@@ -114,6 +122,15 @@ export default function Inicio() {
               ))}
             </div>
             <span className="sutil">{meta <= 30 ? 'Partida de uns 15 minutos.' : meta <= 50 ? 'Partida de uns 25 minutos.' : 'Partida de mais de 40 minutos.'}</span>
+          </fieldset>
+          <fieldset className="campo">
+            <legend className="rotulo">Tempo por vez</legend>
+            <div className="opcoes">
+              {TEMPOS.map((t) => (
+                <button key={t.v} type="button" className={`opcao${tempo === t.v ? ' marcada' : ''}`} aria-pressed={tempo === t.v} onClick={() => setTempo(t.v)}>{t.nome}</button>
+              ))}
+            </div>
+            <span className="sutil">{tempo ? `Quem não agir em ${tempo}s passa a vez sozinho.` : 'Sem cronômetro: cada um joga no seu ritmo.'}</span>
           </fieldset>
           <label className="check">
             <input id="especiais" type="checkbox" checked={especiais} onChange={(e) => setEspeciais(e.target.checked)} />

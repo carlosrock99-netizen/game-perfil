@@ -5,12 +5,15 @@
   "description": "Jogo de adivinhação no estilo Perfil, online: sala com código, cada jogador no seu celular e telão do anfitrião com tabuleiro.",
   "license": "MIT",
   "main": "server/index.js",
-  "engines": { "node": ">=18" },
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "start": "node server/index.js",
     "dev": "node --watch server/index.js",
     "build": "npm --prefix client install && npm --prefix client run build",
     "test": "node --test test/*.test.js",
+    "typecheck": "tsc --noEmit",
     "importar-cartas": "node scripts/importar-sql.js"
   },
   "dependencies": {
@@ -18,6 +21,8 @@
     "socket.io": "^4.8.1"
   },
   "devDependencies": {
-    "socket.io-client": "^4.8.1"
+    "@types/node": "^26.6.6",
+    "socket.io-client": "^4.8.1",
+    "typescript": "^7.0.2"
   }
 }

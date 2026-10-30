@@ -13,7 +13,7 @@ real, o tabuleiro e as dicas especiais.
 ## Como se joga
 
 1. O anfitrião abre o site, escolhe os temas, o nível de dificuldade, a casa de
-   chegada e cria a sala.
+   chegada (e, se quiser, um tempo por vez) e cria a sala.
 2. A turma entra pelo QR code, pelo link de convite ou digitando o código de 5 letras.
 3. A ordem das vezes é sorteada. Na sua vez você **abre uma dica** da carta (1 a 20).
    A dica aparece para todos.
@@ -39,12 +39,20 @@ de digitação maior), **pular a vez** de quem sumiu, **revelar a resposta** e
 **remover jogadores**. Se alguém cair da internet na própria vez, a vez é pulada
 sozinha depois de 25 segundos.
 
+O anfitrião tem um botão **Desfazer** para corrigir a última jogada (um acerto
+julgado errado, uma dica aberta sem querer). Com a partida em andamento, o telão
+entra em **modo apresentação**: mostra só a dica aberta em destaque, o tabuleiro
+com os peões e a classificação, escondendo o QR e os controles de gerenciamento.
+O jogador pode ligar/desligar o **aviso sonoro e a vibração** que tocam quando
+chega a vez dele. O **cronômetro por vez** (opcional) passa a vez sozinho de quem
+não agir a tempo.
+
 ## Telas
 
 | Endereço | Quem usa | O que mostra |
 | --- | --- | --- |
 | `/` | todos | criar sala ou entrar com código |
-| `/host/CODIGO` | anfitrião (TV, notebook ou celular) | convite com QR, carta, tabuleiro, classificação, ordem das vezes e controles |
+| `/host/CODIGO` | anfitrião (TV, notebook ou celular) | convite com QR, carta, tabuleiro, classificação, ordem das vezes e controles; em jogo vira **modo apresentação** (dica em destaque + tabuleiro + placar) |
 | `/sala/CODIGO` | jogadores | a vez, o campo de palpite, a carta e o tabuleiro |
 
 O anfitrião pode jogar do mesmo aparelho (marcado por padrão ao criar a sala) ou
@@ -75,6 +83,7 @@ Testes das regras:
 
 ```bash
 npm test
+npm run typecheck   # checagem de tipos (JSDoc + @ts-check)
 ```
 
 ## Publicar
@@ -82,12 +91,33 @@ npm test
 O jogo precisa de um servidor que aceite WebSocket. **Netlify e Vercel não servem**
 (só hospedam páginas estáticas).
 
-- **Render (grátis):** suba o repositório no GitHub, crie um *Blueprint* no Render
-  e aponte para este repositório. O `render.yaml` já tem tudo. No plano grátis o
-  servidor dorme após 15 minutos parado e leva uns 30 segundos para acordar:
-  abra o site um pouco antes de jogar.
-- **Railway ou Fly.io:** detectam o `package.json`; comando de build
-  `npm install && npm run build`, comando de início `npm start`.
+### Render (link público, grátis)
+
+O `render.yaml` já descreve o serviço (Node, build, start e health check em
+`/api/saude`). O caminho mais rápido é um *Blueprint*:
+
+1. Garanta que o repositório está no GitHub. Repositório privado: autorize o
+   GitHub App do Render na sua instalação (Dashboard → Account Settings → GitHub).
+2. No dashboard do Render: **New + → Blueprint** e escolha este repositório.
+3. Confirme o serviço `perfil-online`, plano **Free**, e clique em **Apply**.
+4. Quando o build terminar, o Render mostra uma URL do tipo
+   `https://perfil-online-xxxx.onrender.com`. Compartilhe o link (ou o QR do
+   lobby) e todo mundo entra.
+
+No plano grátis o serviço dorme após 15 minutos sem acesso e leva ~30s para
+acordar: abra o link um pouco antes de jogar. Para ficar sempre acordado, use um
+plano pago ou um ping periódico em `/api/saude`.
+
+**Alternativa por API (sem dashboard):** com uma chave em
+`dashboard.render.com/u/settings#api-keys`, dá para criar o serviço via
+`POST https://api.render.com/v1/services` (campos `repo`, `branch`,
+`serviceDetails.buildCommand`/`startCommand` e `healthCheckPath`, iguais ao
+`render.yaml`).
+
+### Railway ou Fly.io
+
+Detectam o `package.json`; comando de build `npm install && npm run build`,
+comando de início `npm start`.
 - **Docker / Portainer:**
   ```bash
   docker build -t perfil-online .
@@ -148,6 +178,7 @@ server/
 data/cartas.json  baralho
 scripts/importar-sql.js  converte o cartas.sql do projeto original
 test/  testes das regras e do verificador
+tsconfig.json  checagem de tipos (JSDoc + @ts-check)
 ```
 
 - O servidor é a única autoridade: valida a vez, confere o palpite e só envia a
@@ -161,10 +192,12 @@ test/  testes das regras e do verificador
 ## Roteiro
 
 - [x] Nível de dificuldade por carta (fácil, médio, difícil, complexo) e filtro na criação da sala.
+- [x] Cronômetro opcional por vez (quem não age a tempo passa a vez).
+- [x] Desfazer a última jogada (anfitrião).
+- [x] Aviso sonoro/vibração na sua vez e modo apresentação do telão.
 - [ ] Mais cartas no nível complexo (hoje são 11).
 - [ ] Mais temas além dos quatro do Perfil (esportes, música, cinema etc.).
 - [ ] Guardar as salas no Redis para sobreviver a reinício do servidor.
-- [ ] Cronômetro opcional por vez.
 - [ ] Trazer o gerador de cartas do Wikidata para Node.
 
 ## Créditos e licença

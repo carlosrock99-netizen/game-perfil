@@ -1,5 +1,6 @@
 // Servidor do Perfil Online: Express serve o front compilado e o Socket.io
 // leva as jogadas em tempo real. As salas ficam em memória.
+// @ts-check
 
 const path = require('path');
 const crypto = require('crypto');
@@ -55,7 +56,7 @@ function buscar(codigo) {
 
 /** Envolve um handler: erros de regra voltam como {ok:false, erro}. */
 function seguro(fn) {
-  return async (dados = {}, responder = () => {}) => {
+  return async (/** @type {any} */ dados = {}, /** @type {(r: any) => void} */ responder = () => {}) => {
     if (typeof responder !== 'function') responder = () => {};
     try {
       responder({ ok: true, ...(await fn(dados)) });
@@ -132,11 +133,13 @@ io.on('connection', (socket) => {
     const reg = exigirJogador();
     const { sala } = reg;
     const id = socket.data.id;
+    const snap = sala.snapshot();
     if (tipo === 'abrir') sala.abrirDica(id, n);
     else if (tipo === 'chutar') sala.chutar(id, texto);
     else if (tipo === 'passar') sala.passar(id);
     else if (tipo === 'julgar') sala.julgar(id, resultado);
     else throw new ErroJogo('Jogada desconhecida.');
+    sala.empilhar(snap);
     transmitir(reg);
     return {};
   }));
@@ -144,6 +147,7 @@ io.on('connection', (socket) => {
   socket.on('comando', seguro(({ tipo, id }) => {
     const reg = exigirHost();
     const { sala } = reg;
+    if (tipo === 'desfazer') { sala.desfazer(); transmitir(reg); return {}; }
     const acoes = {
       iniciar: () => sala.iniciar(),
       proxima: () => sala.proximaCarta(),
@@ -154,7 +158,10 @@ io.on('connection', (socket) => {
       nova: () => sala.novaPartida(),
     };
     if (!acoes[tipo]) throw new ErroJogo('Comando desconhecido.');
+    const snap = sala.snapshot();
     acoes[tipo]();
+    // Iniciar/nova partida não entram no histórico: o desfazer é para jogadas.
+    if (tipo !== 'nova' && tipo !== 'iniciar') sala.empilhar(snap);
     transmitir(reg);
     return {};
   }));
@@ -170,11 +177,20 @@ io.on('connection', (socket) => {
   });
 });
 
-// Faxina: pula a vez de quem caiu e apaga salas abandonadas.
+// Faxina: roda o cronômetro da vez, pula quem caiu e apaga salas abandonadas.
 setInterval(() => {
   const agora = Date.now();
   for (const [codigo, reg] of salas) {
     if (agora - reg.tocadaEm > SALA_OCIOSA_MS) { salas.delete(codigo); log('sala apagada', codigo); continue; }
+    // Cronômetro: quem não agiu a tempo passa a vez sozinho.
+    try {
+      if (reg.sala.expirouVez()) {
+        reg.sala.tempoEsgotado();
+        reg.ausenteDesde = null;
+        transmitir(reg);
+        continue;
+      }
+    } catch { /* a fase mudou durante a checagem */ }
     const daVez = reg.sala.jogadorDaVez();
     if (daVez && !daVez.online) {
       reg.ausenteDesde ??= agora;
@@ -184,7 +200,7 @@ setInterval(() => {
       }
     } else reg.ausenteDesde = null;
   }
-}, 5000).unref();
+}, 1000).unref();
 
 app.get('/api/saude', (_req, res) => res.json({ ok: true, salas: salas.size, cartas: baralho.length }));
 app.get('/api/baralho', (_req, res) => {

@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import { pedir, guardar, irPara, useEstado, useConectado, useAoConectar, useSegredo } from '../conexao';
-import { Carta, Tabuleiro, Placar, Convite, PainelVez, PainelMediador, Resultado } from '../components/Jogo';
+import { Carta, Tabuleiro, Placar, Convite, PainelVez, PainelMediador, Resultado, Relogio, DicaDestaque } from '../components/Jogo';
+import { tocarAviso, vibrar } from '../som';
 
 /**
  * Uma só tela para o anfitrião (telão) e para o jogador (celular).
@@ -56,6 +57,16 @@ export default function Mesa({ codigo, modo }) {
     return () => { document.removeEventListener('visibilitychange', pedirTrava); trava?.release().catch(() => {}); };
   }, [souHost]);
 
+  // Aviso sonoro e vibração quando a ação pendente passa a ser minha.
+  const [som, setSom] = useState(guardar.ler('som') !== false);
+  const restante = useRelogio(estado);
+  useEffect(() => {
+    if (!som || !meuId || !estado || estado.fase !== 'jogo' || estado.pendeDe !== meuId) return;
+    tocarAviso();
+    vibrar();
+  }, [som, meuId, estado?.fase, estado?.pendeDe]);
+  const alternarSom = () => { const v = !som; setSom(v); guardar.gravar('som', v); };
+
   const comando = async (tipo) => { const r = await pedir('comando', { tipo }); if (!r.ok) setErro(r.erro); };
   const abrir = async (n) => { const r = await pedir('jogada', { tipo: 'abrir', n }); if (!r.ok) setErro(r.erro); };
 
@@ -95,13 +106,21 @@ export default function Mesa({ codigo, modo }) {
   const lobby = estado.fase === 'lobby';
 
   return (
-    <main className={`pagina mesa ${souHost ? 'telao' : 'celular'}`}>
+    <main className={`pagina mesa ${souHost ? 'telao' : 'celular'}${souHost && !lobby ? ' apresentacao' : ''}`}>
       <header className="barra">
         <div>
           <span className="rotulo">{souHost ? 'Anfitrião' : 'Sala'} · {estado.codigo}</span>
           <h1 className="titulo-mesa">Perfil <em>Online</em></h1>
         </div>
-        {!conectado && <span className="tag alerta">Reconectando…</span>}
+        <div className="barra-dir">
+          <Relogio estado={estado} restante={restante} />
+          {meuId && (
+            <button type="button" className={`botao fantasma mini${som ? '' : ' off'}`} aria-pressed={som} onClick={alternarSom} title={som ? 'Som da vez ligado' : 'Som da vez desligado'}>
+              {som ? '🔔' : '🔕'}
+            </button>
+          )}
+          {!conectado && <span className="tag alerta">Reconectando…</span>}
+        </div>
       </header>
       {erro && <p className="erro" role="alert">{erro} <button type="button" className="botao fantasma mini" onClick={() => setErro('')}>OK</button></p>}
 
@@ -116,7 +135,7 @@ export default function Mesa({ codigo, modo }) {
             <Placar estado={estado} meuId={meuId} souHost={souHost} />
             {souHost && (
               <section className="painel">
-                <p className="sutil">{estado.cartasNoBaralho} cartas{estado.config.niveis?.length ? ` (${estado.config.niveis.map((n) => ({ facil: 'fácil', medio: 'médio', dificil: 'difícil', complexo: 'complexo' })[n]).join(', ')})` : ''} · chegada na casa {estado.config.meta} · dicas especiais {estado.config.especiais ? 'ligadas' : 'desligadas'}</p>
+                <p className="sutil">{estado.cartasNoBaralho} cartas{estado.config.niveis?.length ? ` (${estado.config.niveis.map((n) => ({ facil: 'fácil', medio: 'médio', dificil: 'difícil', complexo: 'complexo' })[n]).join(', ')})` : ''} · chegada na casa {estado.config.meta} · dicas especiais {estado.config.especiais ? 'ligadas' : 'desligadas'} · tempo {estado.config.tempo ? `${estado.config.tempo}s por vez` : 'livre'}</p>
                 <button type="button" className="botao grande" disabled={estado.jogadores.length < 2} onClick={() => comando('iniciar')}>
                   {estado.jogadores.length < 2 ? 'Esperando pelo menos 2 jogadores' : 'Começar partida'}
                 </button>
@@ -127,23 +146,25 @@ export default function Mesa({ codigo, modo }) {
       ) : (
         <div className="grade-mesa">
           <div className="coluna">
-            {souMediador && <PainelMediador estado={estado} segredo={segredoAtual} />}
+            {souMediador && <PainelMediador estado={estado} segredo={segredoAtual} telao={souHost} />}
             {meuId && !souMediador && <PainelVez estado={estado} meuId={meuId} />}
             {!meuId && estado.fase === 'jogo' && <VezTelao estado={estado} />}
             <Resultado estado={estado} souHost={souHost} />
+            {souHost && <DicaDestaque estado={estado} />}
             <Carta estado={estado} podeAbrir={podeAbrir} aoAbrir={abrir} />
-            {souHost && estado.fase === 'jogo' && (
+            {souHost && (estado.fase === 'jogo' || estado.fase === 'revelada') && (
               <section className="painel controles">
                 <span className="rotulo">Controles do anfitrião</span>
-                {estado.ultimoErro && (
+                {estado.fase === 'jogo' && estado.ultimoErro && (
                   <p className="linha">
                     <span>{estado.ultimoErro.nome} chutou “{estado.ultimoErro.palpite}”. Estava certo?</span>
                     <button type="button" className="botao fantasma mini" onClick={() => comando('valer')}>Valer resposta</button>
                   </p>
                 )}
                 <div className="linha">
-                  <button type="button" className="botao fantasma mini" onClick={() => comando('pular')}>Pular a vez</button>
-                  <button type="button" className="botao fantasma mini" onClick={() => comando('revelar')}>Revelar resposta</button>
+                  {estado.fase === 'jogo' && <button type="button" className="botao fantasma mini" onClick={() => comando('pular')}>Pular a vez</button>}
+                  {estado.fase === 'jogo' && <button type="button" className="botao fantasma mini" onClick={() => comando('revelar')}>Revelar resposta</button>}
+                  {estado.podeDesfazer && <button type="button" className="botao fantasma mini" onClick={() => comando('desfazer')}>↩ Desfazer</button>}
                 </div>
               </section>
             )}
@@ -151,7 +172,6 @@ export default function Mesa({ codigo, modo }) {
           <div className="coluna">
             <Placar estado={estado} meuId={meuId} souHost={souHost} />
             <Tabuleiro estado={estado} compacto={!souHost} />
-            {souHost && <Convite codigo={estado.codigo} />}
           </div>
         </div>
       )}
@@ -170,4 +190,16 @@ function VezTelao({ estado }) {
       <p className="sutil">{estado.etapa === 'abrir' ? 'Escolhendo uma dica…' : estado.mediador ? 'Falando o palpite…' : 'Pensando no palpite…'}</p>
     </section>
   );
+}
+
+/** Contagem regressiva local, reiniciada a cada estado novo vindo do servidor. */
+function useRelogio(estado) {
+  const [restante, setRestante] = useState(null);
+  useEffect(() => {
+    if (!estado?.tempo || estado.tempoRestante == null) { setRestante(null); return; }
+    setRestante(estado.tempoRestante);
+    const t = setInterval(() => setRestante((r) => (r == null ? null : Math.max(0, r - 1))), 1000);
+    return () => clearInterval(t);
+  }, [estado?.versao, estado?.tempo, estado?.tempoRestante]);
+  return restante;
 }
