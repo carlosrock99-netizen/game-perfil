@@ -5,6 +5,8 @@ Jogo de adivinhação no estilo do tabuleiro **Perfil**, para jogar em grupo com
 link ou QR code, e a tela do anfitrião vira o telão com a carta, o tabuleiro e a
 classificação.
 
+**No ar:** https://http--game-perfil--wgs9cp9p72ty.code.run
+
 Baseado no projeto [AdrielFerr/perfil](https://github.com/AdrielFerr/perfil)
 (MIT): de lá vêm o baralho de 175 cartas com 20 dicas cada, as regras e o
 verificador de palpite. O que este projeto acrescenta é o jogo online em tempo
@@ -113,6 +115,19 @@ plano pago ou um ping periódico em `/api/saude`.
 `POST https://api.render.com/v1/services` (campos `repo`, `branch`,
 `serviceDetails.buildCommand`/`startCommand` e `healthCheckPath`, iguais ao
 `render.yaml`).
+
+### Northflank (grátis, sempre ligado)
+
+Roda 24/7 no plano **Developer Sandbox**, sem dormir e com WebSocket nativo.
+
+- **No ar:** https://http--game-perfil--wgs9cp9p72ty.code.run
+- Serviço `game-perfil` no projeto `Default` (região US‑Central), build por
+  **Dockerfile**, porta **3000** pública e health check em `/api/saude`.
+
+Para subir de novo: **Create service → Combined service** → repositório público
+`https://github.com/carlosrock99-netizen/game-perfil` → branch `main` →
+**Dockerfile** (`/Dockerfile`, contexto `/`) → **Add port 3000 HTTP público** →
+**Create service**.
 
 ### Waifly (grátis, 24/7, sem cartão)
 
