@@ -9,7 +9,7 @@ const express = require('express');
 const { Server } = require('socket.io');
 const { Sala, ErroJogo, TEMAS, NIVEIS } = require('./regras');
 
-const PORTA = Number(process.env.PORT) || 3000;
+const PORTA = Number(process.env.PORT || process.env.SERVER_PORT) || 3000;
 const SALA_OCIOSA_MS = 6 * 60 * 60 * 1000; // apaga salas paradas há 6 h
 const PULAR_AUSENTE_MS = 25 * 1000; // pula a vez de quem caiu
 const baralho = require(process.env.CARTAS || path.join(__dirname, '..', 'data', 'cartas.json'));
@@ -217,6 +217,6 @@ app.use(express.static(dist, { maxAge: '1h', index: false }));
 app.get(/^\/(?!api|socket\.io).*/, (_req, res) => res.sendFile(path.join(dist, 'index.html')));
 
 if (require.main === module) {
-  servidor.listen(PORTA, () => log(`Perfil Online em http://localhost:${PORTA} (${baralho.length} cartas)`));
+  servidor.listen(PORTA, '0.0.0.0', () => log(`Perfil Online em http://localhost:${PORTA} (${baralho.length} cartas)`));
 }
 module.exports = { app, servidor, io, salas };

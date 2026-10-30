@@ -114,6 +114,29 @@ plano pago ou um ping periódico em `/api/saude`.
 `serviceDetails.buildCommand`/`startCommand` e `healthCheckPath`, iguais ao
 `render.yaml`).
 
+### Waifly (grátis, 24/7, sem cartão)
+
+O Waifly é um painel Pterodactyl: você sobe os arquivos, ele instala as
+dependências no start e roda 24/7 (300 MB RAM / 1 GB de disco no plano free).
+
+1. Gere o pacote de produção:
+   ```powershell
+   powershell -ExecutionPolicy Bypass -File scripts\pacote-waifly.ps1
+   ```
+   Isso cria `perfil-online-waifly.zip` (front compilado + servidor + baralho,
+   sem `node_modules`).
+2. No painel (`panel.waifly.com`), abra o servidor → **Files** → **Upload** o
+   zip → botão direito → **Unarchive**.
+3. Em **Startup**, defina o comando `npm start`. O servidor lê a porta de
+   `PORT` ou `SERVER_PORT`, então **não** fixe porta no código.
+4. Em **Console**, clique em **Start**. O log mostra o `npm install` e depois
+   `Perfil Online em http://localhost:XXXX`.
+5. Use o **Web Address** do dashboard (ou aponte um domínio próprio).
+
+O plano free não inclui subdomínio/SSL; sem domínio o endereço `http://IP:PORTA`
+funciona (o WebSocket vai por `ws://`). Para HTTPS grátis, aponte um domínio seu
+ou use um proxy Cloudflare.
+
 ### Railway ou Fly.io
 
 Detectam o `package.json`; comando de build `npm install && npm run build`,
