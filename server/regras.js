@@ -7,7 +7,8 @@
 //  - 20 dicas por carta; o jogador da vez abre uma dica e chuta ou passa.
 //  - Acertou: anda 1 casa por dica ainda fechada (mínimo 1).
 //  - Errou o chute: fica fora desta carta e volta na próxima.
-//  - Todos fora ou dicas acabaram: ninguém anda, a resposta aparece.
+//  - Todos fora ou dicas acabaram: no modo digitado ninguém anda; no modo
+//    mediador, o mediador ganha as casas correspondentes às dicas usadas (até 20).
 //  - Vence quem chegar primeiro à casa final (meta).
 //  - Dicas especiais (opcional): ao abrir, além da dica, aplicam um efeito.
 //  - Carta nunca se repete na mesma partida.
@@ -16,8 +17,8 @@
 //  - digitado: o jogador digita o palpite e o servidor confere.
 //  - mediador: a cada carta um jogador da roda vira mediador. Só ele vê a
 //    resposta e as 20 dicas; lê a dica em voz alta, ouve o palpite falado e
-//    aperta Acertou, Errou ou Passou. Quando alguém acerta, o mediador anda o
-//    mesmo número de casas (as dicas que ficaram fechadas).
+//    aperta Acertou, Errou ou Passou. O mediador anda 1 casa por dica aberta
+//    (diferença dos pontos do jogador que acertou, ou 20 se ninguém acertar).
 // @ts-check
 
 /**
@@ -345,14 +346,19 @@ class Sala {
 
   // ---------- internos ----------
   pontuar(j, palpite, fechadas = TOTAL_DICAS - this.abertas.length) {
-    const casas = Math.max(1, fechadas);
+    const casasJogador = Math.max(1, fechadas);
+    const dicasAbertas = TOTAL_DICAS - fechadas;
+    // Regra padrão: o mediador ganha os pontos da diferença (1 casa por dica aberta)
+    const casasMediador = Math.max(0, TOTAL_DICAS - casasJogador);
+
     j.acertos++;
-    this.acerto = { id: j.id, nome: j.nome, palpite, casas, abertas: TOTAL_DICAS - fechadas, mediador: null };
-    this.andar(j, casas);
+    this.acerto = { id: j.id, nome: j.nome, palpite, casas: casasJogador, abertas: dicasAbertas, mediador: null };
+    this.andar(j, casasJogador);
+
     const m = this.mediador && this.jogador(this.mediador);
-    if (m && !this.vencedor) {
-      this.andar(m, casas);
-      this.acerto.mediador = { id: m.id, nome: m.nome, casas };
+    if (m && !this.vencedor && casasMediador > 0) {
+      this.andar(m, casasMediador);
+      this.acerto.mediador = { id: m.id, nome: m.nome, casas: casasMediador };
     }
     if (!this.vencedor) { this.fase = 'revelada'; this.etapa = null; }
   }
@@ -368,7 +374,9 @@ class Sala {
 
   passarVez(evento) {
     this.evento = evento;
-    if (this.abertas.length >= TOTAL_DICAS) return this.encerrarCarta(`${evento} As dicas acabaram e ninguém anda.`);
+    if (this.abertas.length >= TOTAL_DICAS) {
+      return this.encerrarSemAcerto(`${evento} As dicas acabaram`);
+    }
     const n = this.jogadores.length;
     for (let passo = 1; passo <= n; passo++) {
       const ix = (this.vez + passo) % n;
@@ -379,7 +387,23 @@ class Sala {
         return;
       }
     }
-    this.encerrarCarta(`${evento} Todos erraram e ninguém anda.`);
+    this.encerrarSemAcerto(`${evento} Todos erraram`);
+  }
+
+  /** Quando ninguém acerta (acabaram as dicas ou todos erraram): mediador ganha 20 casas. */
+  encerrarSemAcerto(motivo) {
+    const m = this.mediador && this.jogador(this.mediador);
+    if (m) {
+      const casasMediador = TOTAL_DICAS;
+      this.andar(m, casasMediador);
+      if (this.vencedor) {
+        this.evento = `${motivo} e ${m.nome} (mediador) avançou ${casasMediador} casas e venceu!`;
+        return;
+      }
+      this.encerrarCarta(`${motivo} e ${m.nome} (mediador) avançou ${casasMediador} casas!`);
+      return;
+    }
+    this.encerrarCarta(`${motivo} e ninguém anda.`);
   }
 
   encerrarCarta(evento) {
